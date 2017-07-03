@@ -7,8 +7,7 @@
 [![Quality Score][ico-code-quality]][link-code-quality]
 [![Total Downloads][ico-downloads]][link-downloads]
 
-This is where your description should go. Try and limit it to a paragraph or two, and maybe throw in a mention of what
-PSRs you support to avoid any confusion with users and contributors.
+The **Akkroo SDK for PHP** allows developers to easily integrate Akkroo services into their applications. It provides access to our [REST API][link-akkroo-api] using handy PHP objects and interfaces that follow the [PSR-2 Coding Standard][link-psr2-style].
 
 ## Install
 
@@ -21,8 +20,13 @@ $ composer require akkroo/akkroo-sdk-php
 ## Usage
 
 ``` php
+// Use your favourite PSR-7 HTTP client
 $http = new Some\Psr7\HTTPClient();
+
+// Create an Akkroo client with your API key
 $akkroo = new Client($http, 'YourAkkrooAPIKey')->login();
+
+// Do awesome stuff...
 var_dump($akkroo->test());
 ```
 
@@ -75,3 +79,5 @@ The MIT License (MIT). Please see [License File](LICENSE.md) for more informatio
 [link-author-tom]: https://github.com/TomAkkroo
 [link-author-vito]: https://github.com/vtardia
 [link-contributors]: ../../contributors
+[link-akkroo-api]: http://docs.akkroo.com/developers/api
+[link-psr2-style]: https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-2-coding-style-guide.md
