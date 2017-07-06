@@ -189,7 +189,7 @@ class Client
      */
     public function test()
     {
-        return $this->request('GET', '/selftest');
+        return new Result($this->request('GET', '/selftest'));
     }
 
     /**
@@ -242,9 +242,7 @@ class Client
         // Parse response body into an appropriate Akkroo object
         $body = (string) $response->getBody();
 
-        // TODO: use a factory to determine the best result object to return
-        // (eg. Akkroo\Collection, Akkroo\Event, Registration, Company, etc)
-        // OR just return the result and let the caller decide which object return
-        return new Result(json_decode($body, true));
+        // Return the decoded JSON and let the caller create the appropriate result format
+        return json_decode($body, true);
     }
 }
