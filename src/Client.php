@@ -203,7 +203,54 @@ class Client
     }
 
     /**
+     * Process response status
+     *
+     * @param string $method  HTTP method
+     * @param string $path    Relative URL path (without query string)
+     *
+     * @return boolean
+     *
+     * @throws Error\Authentication
+     * @throws Error\NotFound
+     * @throws Error\Generic
+     */
+    protected function processResponseStatus($status, $reason = 'unknown')
+    {
+        switch ($status) {
+            case 401:
+            case 403:
+                throw new Error\Authentication($reason, $status);
+                break;
+
+            case 404:
+                throw new Error\NotFound('Resource Not Found', $status);
+                break;
+
+            default:
+                // 3xx redirect status must be managed by the HTTP Client
+                // Statuses other that what we define success are automatic errors
+                if (!in_array($status, [200, 201, 202, 203, 204, 205, 206])) {
+                    throw new Error\Generic("Error Processing Request: " . $reason, $status);
+                }
+                break;
+        }
+        return true;
+    }
+
+    /**
      * Send a request to the API endpoint
+     *
+     * @param string $method  HTTP method
+     * @param string $path    Relative URL path (without query string)
+     * @param array  $headers Additional headers
+     * @param array  $params  Query string parameters
+     * @param array  $data    Request body
+     *
+     * @return array JSON-decoded associative array from server response
+     *
+     * @throws Error\Authentication
+     * @throws Error\NotFound
+     * @throws Error\Generic
      */
     protected function request($method, $path, $headers = [], $params = [], $data = [])
     {
@@ -222,11 +269,7 @@ class Client
         $response = $this->httpClient->sendRequest($request);
 
         // Process status
-        // TODO: improve this by managing intermediate statuses (eg. 201, 206, etc...)
-        $status = $response->getStatusCode();
-        if ($status !== 200) {
-            throw new Error\Generic("Error Processing Request", $status);
-        }
+        $this->processResponseStatus($response->getStatusCode(), $response->getReasonPhrase());
 
         // Check response content type match
         // TODO: improve this by managing multiple accept
