@@ -46,6 +46,7 @@ class ClientTest extends TestCase
         $result = $this->client->test();
         $this->assertInstanceOf(Result::class, $result);
         $this->assertTrue($result->success);
+        $this->assertNotEmpty($result->requestID);
     }
 
     public function testAuthenticationWithNoToken()
@@ -64,6 +65,7 @@ class ClientTest extends TestCase
         $this->httpClient->addResponse($response);
         $result = $this->client->authTest();
         $this->assertFalse($result->success);
+        $this->assertNotEmpty($result->requestID);
     }
 
     public function testAuthenticationWithExpiredToken()
@@ -82,6 +84,7 @@ class ClientTest extends TestCase
         $this->httpClient->addResponse($response);
         $result = $this->client->authTest('ExpiredToken');
         $this->assertFalse($result->success);
+        $this->assertNotEmpty($result->requestID);
     }
 
     public function testAuthenticationWithInvalidToken()
@@ -100,6 +103,7 @@ class ClientTest extends TestCase
         $this->httpClient->addResponse($response);
         $result = $this->client->authTest('InvalidToken');
         $this->assertFalse($result->success);
+        $this->assertNotEmpty($result->requestID);
     }
 
     public function testAuthenticationWithValidToken()
@@ -117,6 +121,7 @@ class ClientTest extends TestCase
         $result = $this->client->authTest('ValidToken');
         $this->assertInstanceOf(Result::class, $result);
         $this->assertTrue($result->success);
+        $this->assertNotEmpty($result->requestID);
     }
 
     public function testSuccessfulLogin()
@@ -155,6 +160,7 @@ class ClientTest extends TestCase
         $result = $this->client->authTest();
         $this->assertInstanceOf(Result::class, $result);
         $this->assertTrue($result->success);
+        $this->assertNotEmpty($result->requestID);
     }
 
     /**
@@ -177,5 +183,28 @@ class ClientTest extends TestCase
         );
         $this->httpClient->addResponse($response);
         $client = $this->client->login();
+    }
+
+    public function testOverridableRequestID()
+    {
+        $customRequestID = 'SomeCustomUniqueValue';
+        $responseFactory = Discovery\MessageFactoryDiscovery::find();
+        $response = $responseFactory->createResponse(
+            200,
+            'OK',
+            ['Content-Type' => $this->defaultResponseContentType],
+            json_encode([
+                'success' => true,
+                'requestID' => $customRequestID
+            ])
+        );
+        $this->httpClient->addResponse($response);
+        $result = $this->client->test([
+            'Request-ID' => $customRequestID
+        ]);
+        $this->assertInstanceOf(Result::class, $result);
+        $this->assertTrue($result->success);
+        $this->assertNotEmpty($result->requestID);
+        $this->assertEquals($customRequestID, $result->requestID);
     }
 }

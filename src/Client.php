@@ -212,11 +212,13 @@ class Client
     /**
      * Send a test API request
      *
+     * @param array  $headers Additional headers
+     *
      * @throws Error\Generic
      */
-    public function test()
+    public function test($headers = [])
     {
-        return new Result($this->request('GET', '/selftest'));
+        return new Result($this->request('GET', '/selftest', $headers));
     }
 
     /**
@@ -241,9 +243,12 @@ class Client
         }
         try {
             return new Result($this->request('GET', '/authTest', $headers));
-        } catch (\Exception $e) {
-            $this->logger->error('Auth Test failed', ['code' => $e->getCode(), 'message' => $e->getMessage()]);
-            return new Result(['success' => false]);
+        } catch (Error\Generic $e) {
+            $this->logger->error(
+                'Auth Test failed',
+                ['code' => $e->getCode(), 'message' => $e->getMessage(), 'requestID' => $e->getRequestID()]
+            );
+            return new Result(['success' => false, 'requestID' => $e->getRequestID()]);
         }
     }
 
@@ -251,6 +256,7 @@ class Client
      * Process response status
      *
      * @param  ResponseInterface $response
+     * @param  string            $requestID Unique linked request
      *
      * @return array The parsed JSON body
      *
@@ -258,11 +264,14 @@ class Client
      * @throws Error\NotFound
      * @throws Error\Generic
      */
-    protected function parseResponse($response)
+    protected function parseResponse($response, $requestID = null)
     {
         $status = $response->getStatusCode();
         $reason = $response->getReasonPhrase();
         $body = $this->parseResponseBody($response);
+        if (!empty($requestID)) {
+            $body['requestID'] = $requestID;
+        }
         switch ($status) {
             case 401:
             case 403:
@@ -316,8 +325,14 @@ class Client
         // Minimal default header
         $acceptContentType = sprintf('application/vnd.akkroo-v%s+json', $this->options['version']);
 
+        // Unique request ID
+        $requestID = uniqid('', true);
+
         // Adding custom headers
-        $requestHeaders = array_merge_recursive(['Accept' => $acceptContentType], $headers);
+        $requestHeaders = array_merge([
+            'Accept' => $acceptContentType,
+            'Request-ID' => $requestID
+        ], $headers);
 
         // Creating URI: URI params must be already provided by the calling method
         $uri = $this->uriFactory->createUri($this->options['endpoint'])
@@ -334,6 +349,6 @@ class Client
         }
 
         // Return the decoded JSON and let the caller create the appropriate result format
-        return $this->parseResponse($response);
+        return $this->parseResponse($response, $requestHeaders['Request-ID']);
     }
 }
