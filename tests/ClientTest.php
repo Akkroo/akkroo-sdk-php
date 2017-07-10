@@ -21,6 +21,7 @@ class ClientTest extends TestCase
         $this->logger->pushHandler(new StreamHandler(__DIR__.'/../build/logs/tests.log', Logger::DEBUG));
         $this->httpClient = new MockClient;
         $this->defaultResponseContentType = 'application/vnd.akkroo-v1.1.5+json';
+        $this->responseFactory = Discovery\MessageFactoryDiscovery::find();
 
         $this->client = new Client($this->httpClient, $this->apiKey);
         $this->client->setLogger($this->logger);
@@ -33,8 +34,7 @@ class ClientTest extends TestCase
 
     public function testAPITest()
     {
-        $responseFactory = Discovery\MessageFactoryDiscovery::find();
-        $response = $responseFactory->createResponse(
+        $response = $this->responseFactory->createResponse(
             200,
             'OK',
             ['Content-Type' => $this->defaultResponseContentType],
@@ -51,8 +51,7 @@ class ClientTest extends TestCase
 
     public function testAuthenticationWithNoToken()
     {
-        $responseFactory = Discovery\MessageFactoryDiscovery::find();
-        $response = $responseFactory->createResponse(
+        $response = $this->responseFactory->createResponse(
             400,
             'Bad Request',
             ['Content-Type' => $this->defaultResponseContentType],
@@ -70,8 +69,7 @@ class ClientTest extends TestCase
 
     public function testAuthenticationWithExpiredToken()
     {
-        $responseFactory = Discovery\MessageFactoryDiscovery::find();
-        $response = $responseFactory->createResponse(
+        $response = $this->responseFactory->createResponse(
             401,
             'Unauthorized',
             ['Content-Type' => $this->defaultResponseContentType],
@@ -89,8 +87,7 @@ class ClientTest extends TestCase
 
     public function testAuthenticationWithInvalidToken()
     {
-        $responseFactory = Discovery\MessageFactoryDiscovery::find();
-        $response = $responseFactory->createResponse(
+        $response = $this->responseFactory->createResponse(
             401,
             'Unauthorized',
             ['Content-Type' => $this->defaultResponseContentType],
@@ -108,8 +105,7 @@ class ClientTest extends TestCase
 
     public function testAuthenticationWithValidToken()
     {
-        $responseFactory = Discovery\MessageFactoryDiscovery::find();
-        $response = $responseFactory->createResponse(
+        $response = $this->responseFactory->createResponse(
             200,
             'No Error',
             ['Content-Type' => $this->defaultResponseContentType],
@@ -126,8 +122,7 @@ class ClientTest extends TestCase
 
     public function testSuccessfulLogin()
     {
-        $responseFactory = Discovery\MessageFactoryDiscovery::find();
-        $response = $responseFactory->createResponse(
+        $response = $this->responseFactory->createResponse(
             200,
             'No Error',
             ['Content-Type' => $this->defaultResponseContentType],
@@ -147,8 +142,7 @@ class ClientTest extends TestCase
 
     public function testAuthenticationAfterAValidLogin()
     {
-        $responseFactory = Discovery\MessageFactoryDiscovery::find();
-        $response = $responseFactory->createResponse(
+        $response = $this->responseFactory->createResponse(
             200,
             'No Error',
             ['Content-Type' => $this->defaultResponseContentType],
@@ -170,8 +164,7 @@ class ClientTest extends TestCase
      */
     public function testGenericLoginError()
     {
-        $responseFactory = Discovery\MessageFactoryDiscovery::find();
-        $response = $responseFactory->createResponse(
+        $response = $this->responseFactory->createResponse(
             400,
             'Bad Request',
             ['Content-Type' => $this->defaultResponseContentType],
@@ -188,8 +181,7 @@ class ClientTest extends TestCase
     public function testOverridableRequestID()
     {
         $customRequestID = 'SomeCustomUniqueValue';
-        $responseFactory = Discovery\MessageFactoryDiscovery::find();
-        $response = $responseFactory->createResponse(
+        $response = $this->responseFactory->createResponse(
             200,
             'OK',
             ['Content-Type' => $this->defaultResponseContentType],
