@@ -5,6 +5,8 @@ use PHPUnit\Framework\TestCase;
 
 use Akkroo\Client;
 use Akkroo\Result;
+use Akkroo\Resource;
+use Akkroo\Company;
 
 use Http\Mock\Client as MockClient;
 use Http\Discovery;
@@ -198,5 +200,28 @@ class ClientTest extends TestCase
         $this->assertTrue($result->success);
         $this->assertNotEmpty($result->requestID);
         $this->assertEquals($customRequestID, $result->requestID);
+    }
+
+    public function testCompanyResource()
+    {
+        $response = $this->responseFactory->createResponse(
+            200,
+            'OK',
+            ['Content-Type' => $this->defaultResponseContentType],
+            json_encode([
+              'lastModified' => 'Tue, 16 May 2017 13:45:55 GMT',
+              'name' => 'Foobar Inc',
+              'username' => 'fubar',
+              'accountExpires' => null,
+              'created' => 'Tue, 22 Oct 2013 10:04:36 GMT',
+              'numDevices' => 10
+            ])
+        );
+        $this->httpClient->addResponse($response);
+        $company = $this->client->get('company');
+        $this->assertInstanceOf(Company::class, $company);
+        $this->assertEquals('Foobar Inc', $company->name);
+        $this->assertEquals('fubar', $company->username);
+        $this->assertEquals(10, $company->numDevices);
     }
 }

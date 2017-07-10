@@ -126,13 +126,17 @@ class Client
      *
      * @param  string $resource Resource name (i.e. events, registrations)
      * @param  array  $params   Search parameters (i.e. id, event_id, search query, range, fields, sort)
+     * @param array  $headers Additional headers
+     *
      * @return Akkroo\Collection | Akkroo\Resource
+     *
      * @throws Error\Authentication
      * @throws Error\NotFound
      * @throws Error\Generic
      */
-    public function get($resource, array $params = [])
+    public function get($resource, array $params = [], array $headers = [])
     {
+        return Resource::create($resource, $this->request('GET', '/'.$resource, $headers));
     }
 
     /**
