@@ -1,8 +1,7 @@
 <?php
 namespace Akkroo\Error;
 
-use Exception;
-
-class Authentication extends Exception
+class Authentication extends Generic
 {
+    protected $code = 401;
 }

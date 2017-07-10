@@ -7,6 +7,7 @@ use Akkroo\Client;
 use Akkroo\Result;
 
 use Http\Mock\Client as MockClient;
+use Http\Discovery;
 
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
@@ -32,15 +33,149 @@ class ClientTest extends TestCase
 
     public function testAPITest()
     {
-        $responseFactory = \Http\Discovery\MessageFactoryDiscovery::find();
+        $responseFactory = Discovery\MessageFactoryDiscovery::find();
         $response = $responseFactory->createResponse(
             200,
             'OK',
             ['Content-Type' => $this->defaultResponseContentType],
-            '{"success" : true}'
+            json_encode([
+                'success' => true
+            ])
         );
         $this->httpClient->addResponse($response);
         $result = $this->client->test();
         $this->assertInstanceOf(Result::class, $result);
+        $this->assertTrue($result->success);
+    }
+
+    public function testAuthenticationWithNoToken()
+    {
+        $responseFactory = Discovery\MessageFactoryDiscovery::find();
+        $response = $responseFactory->createResponse(
+            400,
+            'Bad Request',
+            ['Content-Type' => $this->defaultResponseContentType],
+            json_encode([
+                'error' => 'invalid_request',
+                'error_description' => 'Access token not found',
+                'detail_error' => 'authAccessTokenNotFound'
+            ])
+        );
+        $this->httpClient->addResponse($response);
+        $result = $this->client->authTest();
+        $this->assertFalse($result->success);
+    }
+
+    public function testAuthenticationWithExpiredToken()
+    {
+        $responseFactory = Discovery\MessageFactoryDiscovery::find();
+        $response = $responseFactory->createResponse(
+            401,
+            'Unauthorized',
+            ['Content-Type' => $this->defaultResponseContentType],
+            json_encode([
+                'error' => 'invalid_grant',
+                'error_description' => 'The access token has expired',
+                'detail_error' => 'authAccessTokenExpired'
+            ])
+        );
+        $this->httpClient->addResponse($response);
+        $result = $this->client->authTest('ExpiredToken');
+        $this->assertFalse($result->success);
+    }
+
+    public function testAuthenticationWithInvalidToken()
+    {
+        $responseFactory = Discovery\MessageFactoryDiscovery::find();
+        $response = $responseFactory->createResponse(
+            401,
+            'Unauthorized',
+            ['Content-Type' => $this->defaultResponseContentType],
+            json_encode([
+                'error' => 'invalid_grant',
+                'error_description' => 'Access invalid',
+                'detail_error' => 'authAccessTokenInvalid'
+            ])
+        );
+        $this->httpClient->addResponse($response);
+        $result = $this->client->authTest('InvalidToken');
+        $this->assertFalse($result->success);
+    }
+
+    public function testAuthenticationWithValidToken()
+    {
+        $responseFactory = Discovery\MessageFactoryDiscovery::find();
+        $response = $responseFactory->createResponse(
+            200,
+            'No Error',
+            ['Content-Type' => $this->defaultResponseContentType],
+            json_encode([
+                'success' => true
+            ])
+        );
+        $this->httpClient->addResponse($response);
+        $result = $this->client->authTest('ValidToken');
+        $this->assertInstanceOf(Result::class, $result);
+        $this->assertTrue($result->success);
+    }
+
+    public function testSuccessfulLogin()
+    {
+        $responseFactory = Discovery\MessageFactoryDiscovery::find();
+        $response = $responseFactory->createResponse(
+            200,
+            'No Error',
+            ['Content-Type' => $this->defaultResponseContentType],
+            json_encode([
+                'access_token' => 'ValidToken',
+                'expires_in' => 86400,
+                'token_type' => 'bearer',
+                'scope' => 'PublicAPI'
+            ])
+        );
+        $this->httpClient->addResponse($response);
+        $client = $this->client->login();
+        $this->assertInstanceOf(Client::class, $client);
+        $this->assertAttributeEquals('ValidToken', 'authToken', $client);
+        $this->assertAttributeEquals(time() + 86400, 'authTokenExpiration', $client);
+    }
+
+    public function testAuthenticationAfterAValidLogin()
+    {
+        $responseFactory = Discovery\MessageFactoryDiscovery::find();
+        $response = $responseFactory->createResponse(
+            200,
+            'No Error',
+            ['Content-Type' => $this->defaultResponseContentType],
+            json_encode([
+                'success' => true
+            ])
+        );
+        $this->httpClient->addResponse($response);
+        $result = $this->client->authTest();
+        $this->assertInstanceOf(Result::class, $result);
+        $this->assertTrue($result->success);
+    }
+
+    /**
+     * @expectedException Akkroo\Error\Generic
+     * @expectedExceptionCode 400
+     * @expectedExceptionMessage Bad Request (invalid_client): Client id was not found in the headers or body
+     */
+    public function testGenericLoginError()
+    {
+        $responseFactory = Discovery\MessageFactoryDiscovery::find();
+        $response = $responseFactory->createResponse(
+            400,
+            'Bad Request',
+            ['Content-Type' => $this->defaultResponseContentType],
+            json_encode([
+                'error' => 'invalid_client',
+                'error_description' => 'Client id was not found in the headers or body',
+                'detail_error' => 'authClientIDNotFound'
+            ])
+        );
+        $this->httpClient->addResponse($response);
+        $client = $this->client->login();
     }
 }

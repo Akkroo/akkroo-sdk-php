@@ -1,8 +1,7 @@
 <?php
 namespace Akkroo\Error;
 
-use Exception;
-
-class NotFound extends Exception
+class NotFound extends Generic
 {
+    protected $code = 404;
 }
