@@ -27,4 +27,9 @@ class Result
         $this->requestID = $value;
         return $this;
     }
+
+    public function toArray()
+    {
+        return $this->data;
+    }
 }
