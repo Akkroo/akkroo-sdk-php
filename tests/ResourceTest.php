@@ -5,6 +5,7 @@ use PHPUnit\Framework\TestCase;
 
 use Akkroo\Resource;
 use Akkroo\Company;
+use Akkroo\Event;
 use Akkroo\Collection;
 
 class ResourceTest extends TestCase
@@ -38,5 +39,15 @@ class ResourceTest extends TestCase
             ['name' => 'Other Company']
         ]);
         $this->assertInstanceOf(Collection::class, $companies);
+    }
+
+    public function testEditableResource()
+    {
+        $event = Resource::create('events', ['id' => 123, 'name' => 'Some Event']);
+        $this->assertInstanceOf(Event::class, $event);
+        $this->assertEquals('Some Event', $event->name);
+        $event->name = 'Another Event';
+        $this->assertEquals('Another Event', $event->name);
+        $this->assertObjectNotHasAttribute('name', $event);
     }
 }
