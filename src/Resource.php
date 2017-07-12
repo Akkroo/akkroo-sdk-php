@@ -23,4 +23,9 @@ class Resource extends Result
         }
         return new $resourceClass($data);
     }
+
+    public function __set($name, $value)
+    {
+        $this->data[$name] = $value;
+    }
 }
