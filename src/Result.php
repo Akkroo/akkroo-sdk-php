@@ -1,6 +1,8 @@
 <?php
 namespace Akkroo;
 
+use LogicException;
+
 class Result
 {
     protected $data = [];
@@ -22,12 +24,24 @@ class Result
         return null;
     }
 
+    public function __set($name, $value)
+    {
+        throw new LogicException('Cannot add properties to a read-only result');
+    }
+
+    /**
+     * @param string $value A request ID to associate
+     * @return Result
+     */
     public function withRequestID($value)
     {
         $this->requestID = $value;
         return $this;
     }
 
+    /**
+     * @return array
+     */
     public function toArray()
     {
         return $this->data;
