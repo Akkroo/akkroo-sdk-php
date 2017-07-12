@@ -112,7 +112,8 @@ class Client
             'grant_type' => 'client_credentials',
             'scope' => 'PublicAPI'
         ]);
-        $login = new Result($this->request('GET', '/auth', $headers, [], $body));
+        $result = $this->request('GET', '/auth', $headers, [], $body);
+        $login = (new Result($result['data']))->withRequestID($result['requestID']);
         if ($login->access_token) {
             $this->authToken = $login->access_token;
             $this->authTokenExpiration = time() + (int) $login->expires_in;
@@ -136,7 +137,8 @@ class Client
      */
     public function get($resource, array $params = [], array $headers = [])
     {
-        return Resource::create($resource, $this->request('GET', '/'.$resource, $headers));
+        $result = $this->request('GET', '/'.$resource, $headers);
+        return Resource::create($resource, $result['data'])->withRequestID($result['requestID']);
     }
 
     /**
@@ -222,7 +224,8 @@ class Client
      */
     public function test($headers = [])
     {
-        return new Result($this->request('GET', '/selftest', $headers));
+        $result = $this->request('GET', '/selftest', $headers);
+        return (new Result($result['data']))->withRequestID($result['requestID']);
     }
 
     /**
@@ -246,13 +249,14 @@ class Client
             $headers['Authorization'] = 'Bearer ' . $this->authToken;
         }
         try {
-            return new Result($this->request('GET', '/authTest', $headers));
+            $result = $this->request('GET', '/authTest', $headers);
+            return (new Result($result['data']))->withRequestID($result['requestID']);
         } catch (Error\Generic $e) {
             $this->logger->error(
                 'Auth Test failed',
                 ['code' => $e->getCode(), 'message' => $e->getMessage(), 'requestID' => $e->getRequestID()]
             );
-            return new Result(['success' => false, 'requestID' => $e->getRequestID()]);
+            return (new Result(['success' => false]))->withRequestID($e->getRequestID());
         }
     }
 
@@ -272,10 +276,13 @@ class Client
     {
         $status = $response->getStatusCode();
         $reason = $response->getReasonPhrase();
-        $body = $this->parseResponseBody($response);
+        $body = [
+            'data' => $this->parseResponseBody($response)
+        ];
         if (!empty($requestID)) {
             $body['requestID'] = $requestID;
         }
+        $this->logger->debug('Parsed response', ['status' => $status, 'reason' => $reason, 'body' => $body]);
         switch ($status) {
             case 401:
             case 403:
@@ -343,9 +350,13 @@ class Client
             ->withPath($path);
 
         // Create and send a request
+        $this->logger->debug('Sending request', [
+            'method' => $method,
+            'uri' => (string) $uri,
+            'headers' => $requestHeaders
+        ]);
         $request = $this->requestFactory->createRequest($method, $uri, $requestHeaders);
         $response = $this->httpClient->sendRequest($request);
-
         // Check response content type match
         $contentType = $response->getHeaderLine('Content-Type');
         if ($contentType !== $acceptContentType) {

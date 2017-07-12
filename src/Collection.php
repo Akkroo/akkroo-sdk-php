@@ -11,6 +11,8 @@ class Collection extends ArrayObject
 
     protected $writeable = true;
 
+    protected $requestID = null;
+
     public function __construct(array $data = [], $itemType = Resource::class)
     {
         $this->itemType = $itemType;
@@ -34,5 +36,11 @@ class Collection extends ArrayObject
     public function offsetUnset($index)
     {
         throw new LogicException('Cannot remove elements from a read-only collection');
+    }
+
+    public function withRequestID($value)
+    {
+        $this->requestID = $value;
+        return $this;
     }
 }

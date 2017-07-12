@@ -6,7 +6,9 @@ use PHPUnit\Framework\TestCase;
 use Akkroo\Client;
 use Akkroo\Result;
 use Akkroo\Resource;
+use Akkroo\Collection;
 use Akkroo\Company;
+use Akkroo\Event;
 
 use Http\Mock\Client as MockClient;
 use Http\Discovery;
@@ -16,14 +18,25 @@ use Monolog\Handler\StreamHandler;
 
 class ClientTest extends TestCase
 {
+    protected static $logFile;
+
+    public static function setUpBeforeClass()
+    {
+        self::$logFile = __DIR__.'/../build/logs/tests.log';
+        if (is_readable(self::$logFile)) {
+            unlink(self::$logFile);
+        }
+    }
+
     public function setUp()
     {
         $this->apiKey = 'DummyAPIKey';
         $this->logger = new Logger('TestSDK');
-        $this->logger->pushHandler(new StreamHandler(__DIR__.'/../build/logs/tests.log', Logger::DEBUG));
+        $this->logger->pushHandler(new StreamHandler(self::$logFile, Logger::DEBUG));
         $this->httpClient = new MockClient;
         $this->defaultResponseContentType = 'application/vnd.akkroo-v1.1.5+json';
         $this->responseFactory = Discovery\MessageFactoryDiscovery::find();
+        $this->dataDir = dirname(__FILE__) . '/_files';
 
         $this->client = new Client($this->httpClient, $this->apiKey);
         $this->client->setLogger($this->logger);
@@ -223,5 +236,19 @@ class ClientTest extends TestCase
         $this->assertEquals('Foobar Inc', $company->name);
         $this->assertEquals('fubar', $company->username);
         $this->assertEquals(10, $company->numDevices);
+    }
+
+    public function testEventsCollection()
+    {
+        $response = $this->responseFactory->createResponse(
+            200,
+            'No Error',
+            ['Content-Type' => $this->defaultResponseContentType],
+            file_get_contents($this->dataDir . '/events.json')
+        );
+        $this->httpClient->addResponse($response);
+        $events = $this->client->get('events');
+        $this->assertInstanceOf(Collection::class, $events);
+        $this->assertInstanceOf(Event::class, $events[0]);
     }
 }
