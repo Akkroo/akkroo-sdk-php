@@ -9,6 +9,7 @@ use Akkroo\Resource;
 use Akkroo\Collection;
 use Akkroo\Company;
 use Akkroo\Event;
+use Akkroo\Registration;
 
 use Http\Mock\Client as MockClient;
 use Http\Discovery;
@@ -151,12 +152,8 @@ class ClientTest extends TestCase
         $this->httpClient->addResponse($response);
         $client = $this->client->login();
         $this->assertInstanceOf(Client::class, $client);
-        $this->assertAttributeEquals('ValidToken', 'authToken', $client);
+        $this->assertAttributeEquals('ValidToken', 'authToken', $this->client);
         $this->assertAttributeEquals(time() + 86400, 'authTokenExpiration', $client);
-    }
-
-    public function testAuthenticationAfterAValidLogin()
-    {
         $response = $this->responseFactory->createResponse(
             200,
             'No Error',
@@ -172,7 +169,7 @@ class ClientTest extends TestCase
         $this->assertNotEmpty($result->requestID);
     }
 
-    /**
+   /**
      * @expectedException Akkroo\Error\Generic
      * @expectedExceptionCode 400
      * @expectedExceptionMessage Bad Request (invalid_client): Client id was not found in the headers or body
@@ -250,5 +247,108 @@ class ClientTest extends TestCase
         $events = $this->client->get('events');
         $this->assertInstanceOf(Collection::class, $events);
         $this->assertInstanceOf(Event::class, $events[0]);
+    }
+
+    public function testSingleEvent()
+    {
+        $response = $this->responseFactory->createResponse(
+            200,
+            'No Error',
+            ['Content-Type' => $this->defaultResponseContentType],
+            file_get_contents($this->dataDir . '/event_147.json')
+        );
+        $this->httpClient->addResponse($response);
+        $event = $this->client->get('events', ['id' => 147]);
+        $this->assertInstanceOf(Event::class, $event);
+    }
+
+    /**
+     * @expectedException Akkroo\Error\NotFound
+     * @expectedExceptionCode 404
+     */
+    public function testUnknownEvent()
+    {
+        $response = $this->responseFactory->createResponse(
+            404,
+            'Not Found',
+            ['Content-Type' => $this->defaultResponseContentType],
+            json_encode([
+              'error' => 'notFound',
+              'details' => [],
+              'message' => 'Model does not exist'
+            ])
+        );
+        $this->httpClient->addResponse($response);
+        $event = $this->client->get('events', ['id' => 147]);
+    }
+
+    public function testEventRegistrations()
+    {
+        $response = $this->responseFactory->createResponse(
+            200,
+            'No Error',
+            ['Content-Type' => $this->defaultResponseContentType],
+            file_get_contents($this->dataDir . '/event_147_registrations.json')
+        );
+        $this->httpClient->addResponse($response);
+        $registrations = $this->client->get('registrations', ['event_id' => 147]);
+        $this->assertInstanceOf(Collection::class, $registrations);
+        $this->assertInstanceOf(Registration::class, $registrations[0]);
+    }
+
+    public function testSingleRegistration()
+    {
+        $response = $this->responseFactory->createResponse(
+            200,
+            'No Error',
+            ['Content-Type' => $this->defaultResponseContentType],
+            file_get_contents($this->dataDir . '/event_147_registration_58f73032279871a5058b4567.json')
+        );
+        $this->httpClient->addResponse($response);
+        $registration = $this->client->get('registrations', [
+            'id' => '58f73032279871a5058b4567',
+            'event_id' => 147
+        ]);
+        $this->assertInstanceOf(Registration::class, $registration);
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testSingleRegistrationWithNoEventID()
+    {
+        $response = $this->responseFactory->createResponse(
+            404,
+            'Not Found',
+            ['Content-Type' => $this->defaultResponseContentType],
+            json_encode([
+                'error' => 'notFound',
+                'details' => [],
+                'message' => 'Endpoint does not exist'
+            ])
+        );
+        $this->httpClient->addResponse($response);
+        $registration = $this->client->get('registrations', [
+            'id' => '58f73032279871a5058b4567'
+        ]);
+    }
+
+    /**
+     * @expectedException Akkroo\Error\Generic
+     * @expectedExceptionCode 400
+     * @expectedExceptionMessage Invalid response content type: text/plain
+     */
+    public function testErrorOnInvalidResponseContentType()
+    {
+        $response = $this->responseFactory->createResponse(
+            200,
+            'OK',
+            ['Content-Type' => 'text/plain'],
+            json_encode([
+              'success' => true
+            ])
+        );
+        $this->httpClient->addResponse($response);
+        $result = $this->client->test();
     }
 }

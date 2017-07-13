@@ -1,9 +1,319 @@
 [
-    {
-        "id": 147
+  {
+    "id": 147,
+    "lastModified": "Wed, 07 Jun 2017 13:31:31 GMT",
+    "name": "Data Capture",
+    "type": 1,
+    "status": 1,
+    "date": "2016-05-27",
+    "endDate": null,
+    "eventCSS": "/*toolbar-background*/\n #view-form .navigation .toolbar {background-color: #2886b6;}\n#view-form .navigation .popup .toolbar {background-color: #2886b6;}\n#view-form .navigation-toolbar-container {background-color: #2886b6;}\n\n/*app-background and stats panel*/\n #view-form .navigation-view-container {background-color: #2886b6;}\n#view-form #view-formMultipleChoice .formButton input {background-color: transparent}\n#view-form .formSignup-elements .formEl-type-twitter .formEl-wrapper div > span {color: #2886b6;}\n#view-form .formSignup-elements .formEl-radio-radioContainer label, #view-form .formSignup-elements .formEl-checkboxGroup-checkboxGroupContainer label, #view-form .formSignup-elements .formEl-linkBuilder-linkBuilderContainer label, #view-form .formSignup-elements .formEl-type-label label,#view-form .formEl-type-checkbox label  {color: #2886b6;}\n#view-form .formSignup-elements input[type=checkbox]:checked {background-color: #2886b6;}\n#view-form .formSignup-elements input[type=radio]:before {color: #2886b6;}\n#view-form .formSignup-elements input:-webkit-any([type=checkbox], [type=radio]) {border-color: #2886b6;}\n#view-form .formSignup-elements .formEl-radio-radioContainer label a, #view-form .formSignup-elements .formEl-checkboxGroup-checkboxGroupContainer label a, #view-form .formSignup-elements .formEl-LinkBuilder-LinkBuilderContainer label a, #view-form .formSignup-elements .formEl-type-label label a,#view-form .formEl-type-checkbox label a {color: #2886b6;}\n#view-formStatistics .formStatistics-wrapper {background-color: #2886b6;}\n\n/*button-background and link colour*/\n #view-form .formButton input {background-color: #fff;color: #2886b6;}\n#view-formDone .formDone-print-button .formButton:before {color: #2886b6;}\n\n/*toolbar-font*/\n #view-form .navigation .toolbar .toolbar-title {color: #fff;}\n#view-form .popup .navigation .toolbar .toolbar-title, #view-form .popup .navigation .toolbar .toolbarButton .toolbarButton-text {color: #fff;}\n#view-form .toolbarButton.toolbarButton-pointed-left .toolbarButton-point, .toolbarButton.toolbarButton-pointed-right .toolbarButton-point {color: #fff;}\n#view-form .toolbarButton .toolbarButton-text {color: #fff;}\n#view-form .formEl-rating i {color: #fff;}\n\n/*app-font*/\n #view-form #view-formMultipleChoice .formButton input {color: #fff;border-color: #fff;}\n#view-form #view-formMultipleChoice .formMultipleChoice-question {color: #fff;}\n#view-form, #view-form button, #view-form input, #view-form select, #view-form textarea, #view-form label {color: #fff;}\n#view-form .formSignup-elements .formEl-type-twitter .formEl-wrapper div > span {border-color: #fff;}\n#view-form .formEl-rating {border-color:#fff;}\n\n/*highlight, focus, and toolbar border*/\n #view-form .navigation .toolbar {border-color: #fff;}\n#view-form .formSignup-elements .formEl-type-twitter .formEl-wrapper div > span {background-color: #fff;}\n#view-form .formSignup-elements .formEl-radio-radioContainer, #view-form .formSignup-elements .formEl-checkboxGroup-checkboxGroupContainer, #view-form .formSignup-elements .formEl-linkBuilder-linkBuilderContainer, #view-form .formSignup-elements .formEl-type-label,#view-form .formEl-type-checkbox {background-color: #fff;}\n#view-form .formSignup-elements input[type=checkbox]:before {color: #fff;}\n#view-form .formSignup-elements input[type=radio]:checked {background-color: #fff;}\n#view-formSignup .formButton {border-color:#fff;}\n#view-form .formSignup-elements input:-webkit-any([type=text]:focus, [type=email]:focus, [type=number]:focus, [type=url]:focus, [type=tel]:focus, [type=date]:focus, [type=datetime]:focus, [type=datetime-local]:focus, [type=time]:focus, [type=week]:focus, [type=month]:focus), .formSignup-elements textarea:focus {border-color: #fff;}\n#view-form .formEl-rating {border-color:#fff;}\n#view-form .formEl-rating b.tenStar.checked, #view-form .formEl-rating b.tenStar.highlighted {background-color:#fff;}\n\n/*tooltip font color*/\n .tooltip-inner {color: #2e3230;}\n\n/*tooltip background-color*/\n .tooltip-inner {background-color: #feffe0;}\n.tooltip.top .tooltip-arrow, .tooltip.top-left .tooltip-arrow, .tooltip.top-right .tooltip-arrow {border-top-color: #feffe0;}\n.tooltip.right .tooltip-arrow {border-right-color: #feffe0;}\n.tooltip.left .tooltip-arrow {border-left-color: #feffe0;}\n.tooltip.bottom .tooltip-arrow, .tooltip.bottom-left .tooltip-arrow, .tooltip.bottom-right .tooltip-arrow {border-bottom-color: #feffe0;}\n\n",
+    "styleJSON": {
+      "tooltip": {
+        "background-color": "#feffe0"
+      },
+      "tooltip-font": {
+        "color": "#2e3230"
+      },
+      "toolbar-button": {
+        "background-color": "#fff"
+      },
+      "toolbar": {
+        "background-color": "#2886b6"
+      },
+      "toolbar-font": {
+        "color": "#fff"
+      },
+      "app-background": {
+        "background-color": "#2886b6"
+      },
+      "app-font": {
+        "color": "#fff"
+      },
+      "highlight": {
+        "border-color": "#fff"
+      },
+      "styleData": {
+        "1": {
+          "hex": "#2886b6"
+        },
+        "2": {
+          "hex": "#fff"
+        },
+        "3": {
+          "hex": "#fff"
+        },
+        "4": {
+          "hex": "#2886b6"
+        },
+        "5": {
+          "hex": "#fff"
+        },
+        "6": {
+          "hex": "#fff"
+        }
+      },
+      "nopadding": "0",
+      "companyStyle": [
+      ]
     },
-    {
-        "id": 148
-    }
+    "tags": [
+      "__akkroo:flowID:57178cdb27987159078b4568",
+      "__akkroo:collectionName:Basic Event Types",
+      "__akkroo:subscription:offline"
+    ],
+    "preRegEndDate": null,
+    "preRegMaxCount": null,
+    "appSchema": {
+      "name": "Data Capture",
+      "components": {
+        "startingComponent": {
+          "type": "PassThrough",
+          "description": "Starting component for all App flows",
+          "out": "57178cdb6ad97"
+        },
+        "57178cdb6ad97": {
+          "type": "Form",
+          "description": "A signup form",
+          "attrs": {
+            "questions": [
+              {
+                "type": "text",
+                "label": "Full Name",
+                "required": true,
+                "autoCapitalize": "words",
+                "id": "fullName"
+              },
+              {
+                "type": "email",
+                "label": "Email",
+                "required": true,
+                "id": "email"
+              },
+              {
+                "addEmpty": true,
+                "initialVal": "",
+                "id": "select",
+                "type": "select",
+                "label": "Ask a question...",
+                "options": [
+                  {
+                    "value": "one",
+                    "label": "One"
+                  },
+                  {
+                    "value": "two",
+                    "label": "Two"
+                  },
+                  {
+                    "value": "three",
+                    "label": "Three"
+                  }
+                ]
+              }
+            ],
+            "styleJSON": "{\n    \"tooltip\": {\n        \"background-color\": \"#feffe0\"\n    },\n    \"tooltip-font\": {\n        \"color\": \"#2e3230\"\n    },\n    \"toolbar-button\": {\n        \"background-color\": \"#fff\"\n    },\n    \"toolbar\": {\n        \"background-color\": \"#2886b6\"\n    },\n    \"toolbar-font\": {\n        \"color\": \"#fff\"\n    },\n    \"app-background\": {\n        \"background-color\": \"#2886b6\"\n    },\n    \"app-font\": {\n        \"color\": \"#fff\"\n    },\n    \"highlight\": {\n        \"border-color\": \"#fff\"\n    },\n    \"styleData\": {\n        \"1\": {\n            \"hex\": \"#2886b6\"\n        },\n        \"2\": {\n            \"hex\": \"#fff\"\n        },\n        \"3\": {\n            \"hex\": \"#fff\"\n        },\n        \"4\": {\n            \"hex\": \"#2886b6\"\n        },\n        \"5\": {\n            \"hex\": \"#fff\"\n        },\n        \"6\": {\n            \"hex\": \"#fff\"\n        }\n    },\n    \"nopadding\": \"0\"\n}",
+            "tags": [
+              "__akkroo:flowID:57178cdb27987159078b4568",
+              "__akkroo:collectionName:Basic Event Types"
+            ],
+            "registerButton": "Register"
+          },
+          "out": "57178cdb6b286"
+        },
+        "57178cdb6b286": {
+          "type": "Save",
+          "description": "Saves registration data when executed",
+          "attrs": {
+            "blocksBackwardsTransitions": true
+          },
+          "out": "57178cdb6b2e3"
+        },
+        "57178cdb6b2e3": {
+          "type": "Thanks",
+          "description": "Thanks the user for completing the App flow",
+          "attrs": {
+            "message": "Thanks for registering!"
+          },
+          "out": "57178cdb6b343"
+        },
+        "57178cdb6b343": {
+          "type": "Reset",
+          "description": "Resets the registration flow data so that the App flow can be restarted",
+          "out": "57178cdb6ad97"
+        }
+      }
+    },
+    "registerButton": "Register",
+    "preserveListFilterAfterCheckin": true,
+    "questions": [
+      {
+        "type": "text",
+        "label": "Full Name",
+        "required": true,
+        "autoCapitalize": "words",
+        "id": "fullName"
+      },
+      {
+        "type": "email",
+        "label": "Email",
+        "required": true,
+        "id": "email"
+      },
+      {
+        "addEmpty": true,
+        "initialVal": "",
+        "id": "select",
+        "type": "select",
+        "label": "Ask a question...",
+        "options": [
+          {
+            "value": "one",
+            "label": "One"
+          },
+          {
+            "value": "two",
+            "label": "Two"
+          },
+          {
+            "value": "three",
+            "label": "Three"
+          }
+        ]
+      }
+    ],
+    "registrationsLastModified": null
+  },
+  {
+    "id": 148,
+    "lastModified": "Wed, 20 Apr 2016 14:32:05 GMT",
+    "name": "Guest List",
+    "type": 2,
+    "status": 1,
+    "date": "2016-07-20",
+    "endDate": null,
+    "eventCSS": "/*toolbar-background*/\n #view-form .navigation .toolbar {background-color: #2886b6;}\n#view-form .navigation .popup .toolbar {background-color: #2886b6;}\n#view-form .navigation-toolbar-container {background-color: #2886b6;}\n\n/*app-background and stats panel*/\n #view-form .navigation-view-container {background-color: #2886b6;}\n#view-form #view-formMultipleChoice .formButton input {background-color: transparent}\n#view-form .formSignup-elements .formEl-type-twitter .formEl-wrapper div > span {color: #2886b6;}\n#view-form .formSignup-elements .formEl-radio-radioContainer label, #view-form .formSignup-elements .formEl-checkboxGroup-checkboxGroupContainer label, #view-form .formSignup-elements .formEl-linkBuilder-linkBuilderContainer label, #view-form .formSignup-elements .formEl-type-label label,#view-form .formEl-type-checkbox label  {color: #2886b6;}\n#view-form .formSignup-elements input[type=checkbox]:checked {background-color: #2886b6;}\n#view-form .formSignup-elements input[type=radio]:before {color: #2886b6;}\n#view-form .formSignup-elements input:-webkit-any([type=checkbox], [type=radio]) {border-color: #2886b6;}\n#view-form .formSignup-elements .formEl-radio-radioContainer label a, #view-form .formSignup-elements .formEl-checkboxGroup-checkboxGroupContainer label a, #view-form .formSignup-elements .formEl-LinkBuilder-LinkBuilderContainer label a, #view-form .formSignup-elements .formEl-type-label label a,#view-form .formEl-type-checkbox label a {color: #2886b6;}\n#view-formStatistics .formStatistics-wrapper {background-color: #2886b6;}\n\n/*button-background and link colour*/\n #view-form .formButton input {background-color: #fff;color: #2886b6;}\n#view-formDone .formDone-print-button .formButton:before {color: #2886b6;}\n#view-form a, #view-form a:visited  {color: #fff;}\n\n/*toolbar-font*/\n #view-form .navigation .toolbar .toolbar-title {color: #fff;}\n#view-form .popup .navigation .toolbar .toolbar-title, #view-form .popup .navigation .toolbar .toolbarButton .toolbarButton-text {color: #fff;}\n#view-form .toolbarButton.toolbarButton-pointed-left .toolbarButton-point, .toolbarButton.toolbarButton-pointed-right .toolbarButton-point {color: #fff;}\n#view-form .toolbarButton .toolbarButton-text {color: #fff;}\n#view-form .formEl-rating i {color: #fff;}\n\n/*app-font*/\n #view-form #view-formMultipleChoice .formButton input {color: #fff;border-color: #fff;}\n#view-form #view-formMultipleChoice .formMultipleChoice-question {color: #fff;}\n#view-form, #view-form button, #view-form input, #view-form select, #view-form textarea, #view-form label {color: #fff;}\n#view-form .formSignup-elements .formEl-type-twitter .formEl-wrapper div > span {border-color: #fff;}\n#view-form .formEl-rating {border-color:#fff;}\n\n/*highlight, focus, and toolbar border*/\n #view-form .navigation .toolbar {border-color: #fff;}\n#view-form .formSignup-elements .formEl-type-twitter .formEl-wrapper div > span {background-color: #fff;}\n#view-form .formSignup-elements .formEl-radio-radioContainer, #view-form .formSignup-elements .formEl-checkboxGroup-checkboxGroupContainer, #view-form .formSignup-elements .formEl-linkBuilder-linkBuilderContainer, #view-form .formSignup-elements .formEl-type-label,#view-form .formEl-type-checkbox {background-color: #fff;}\n#view-form .formSignup-elements input[type=checkbox]:before {color: #fff;}\n#view-form .formSignup-elements input[type=radio]:checked {background-color: #fff;}\n#view-formSignup .formButton {border-color:#fff;}\n#view-form .formSignup-elements input:-webkit-any([type=text]:focus, [type=email]:focus, [type=number]:focus, [type=url]:focus, [type=tel]:focus, [type=date]:focus, [type=datetime]:focus, [type=datetime-local]:focus, [type=time]:focus, [type=week]:focus, [type=month]:focus), .formSignup-elements textarea:focus {border-color: #fff;}\n\n/*tooltip font color*/\n .tooltip-inner {color: #2e3230;}\n\n/*tooltip background-color*/\n .tooltip-inner {background-color: #feffe0;}\n.tooltip.top .tooltip-arrow, .tooltip.top-left .tooltip-arrow, .tooltip.top-right .tooltip-arrow {border-top-color: #feffe0;}\n.tooltip.right .tooltip-arrow {border-right-color: #feffe0;}\n.tooltip.left .tooltip-arrow {border-left-color: #feffe0;}\n.tooltip.bottom .tooltip-arrow, .tooltip.bottom-left .tooltip-arrow, .tooltip.bottom-right .tooltip-arrow {border-bottom-color: #feffe0;}\n\n",
+    "styleJSON": {
+      "tooltip": {
+        "background-color": "#feffe0"
+      },
+      "tooltip-font": {
+        "color": "#2e3230"
+      },
+      "toolbar-button": {
+        "background-color": "#fff"
+      },
+      "toolbar": {
+        "background-color": "#2886b6"
+      },
+      "toolbar-font": {
+        "color": "#fff"
+      },
+      "app-background": {
+        "background-color": "#2886b6"
+      },
+      "app-font": {
+        "color": "#fff"
+      },
+      "highlight": {
+        "border-color": "#fff"
+      },
+      "styleData": {
+        "1": {
+          "hex": "#2886b6"
+        },
+        "2": {
+          "hex": "#fff"
+        },
+        "3": {
+          "hex": "#fff"
+        },
+        "4": {
+          "hex": "#2886b6"
+        },
+        "5": {
+          "hex": "#fff"
+        },
+        "6": {
+          "hex": "#fff"
+        }
+      },
+      "id": "Guest List-7",
+      "companyStyle": [
+      ]
+    },
+    "tags": [
+      "__akkroo:flowID:57178d622798715e078b4568",
+      "__akkroo:collectionName:Basic Event Types",
+      "__akkroo:subscription:offline"
+    ],
+    "preRegEndDate": null,
+    "preRegMaxCount": null,
+    "appSchema": {
+      "name": "Guest List",
+      "components": {
+        "startingComponent": {
+          "type": "PassThrough",
+          "description": "Starting component for all App flows",
+          "out": "57178d62a1cfe"
+        },
+        "57178d62a1cfe": {
+          "type": "GuestList",
+          "description": "List of delegates",
+          "attrs": {
+            "flowTitle": "Guest list"
+          },
+          "out": "57178d62a1d4e"
+        },
+        "57178d62a1d4e": {
+          "type": "ConfirmCheckin",
+          "description": "Confirm delegate email address before completing check-in",
+          "attrs": {
+            "flowTitle": "Confirm Check-in"
+          },
+          "out": "57178d62a1dca"
+        },
+        "57178d62a1dca": {
+          "type": "Save",
+          "description": "Saves registration data when executed",
+          "attrs": {
+            "blocksBackwardsTransitions": true
+          },
+          "out": "57178d62a1e22"
+        },
+        "57178d62a1e22": {
+          "type": "Thanks",
+          "description": "Thanks the user for completing the App flow",
+          "attrs": {
+            "flowTitle": "Thanks!"
+          },
+          "out": "57178d62a1e7c"
+        },
+        "57178d62a1e7c": {
+          "type": "Reset",
+          "description": "Resets the registration flow data so that the App flow can be restarted",
+          "out": "57178d62a1cfe"
+        }
+      }
+    },
+    "registerButton": "Register",
+    "questions": [
+      {
+        "type": "text",
+        "label": "Full Name",
+        "required": true,
+        "autoCapitalize": "words",
+        "id": "fullName"
+      },
+      {
+        "type": "email",
+        "label": "Email",
+        "required": true,
+        "id": "email"
+      }
+    ],
+    "preserveListFilterAfterCheckin": true,
+    "preRegCount": 0,
+    "registrationsLastModified": 1461161489
+  }
 ]
-

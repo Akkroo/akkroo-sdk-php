@@ -9,6 +9,7 @@ use Http\Discovery\MessageFactoryDiscovery;
 use Http\Discovery\UriFactoryDiscovery;
 use Http\Message\UriFactory;
 use Psr\Http\Message\ResponseInterface;
+use InvalidArgumentException;
 
 class Client
 {
@@ -137,7 +138,8 @@ class Client
      */
     public function get($resource, array $params = [], array $headers = [])
     {
-        $result = $this->request('GET', '/'.$resource, $headers);
+        $path = $this->buildPath($resource, $params);
+        $result = $this->request('GET', $path, $headers);
         return Resource::create($resource, $result['data'])->withRequestID($result['requestID']);
     }
 
@@ -317,6 +319,33 @@ class Client
     }
 
     /**
+     * @param string $resource Main resource path
+     * @param array  $params   URL and querystring path
+     * @return string
+     */
+    protected function buildPath($resource, array $params = [])
+    {
+        $path = '/' . $resource;
+        switch ($resource) {
+            case 'events':
+                if (!empty($params['id'])) {
+                    $path .= '/' . $params['id'];
+                }
+                break;
+            case 'registrations':
+                if (empty($params['event_id'])) {
+                    throw new InvalidArgumentException('An event ID is required for registrations');
+                }
+                $path = '/events/' . $params['event_id'] . $resource;
+                if (!empty($params['id'])) {
+                    $path .= '/' . $params['id'];
+                }
+                break;
+        }
+        return $path;
+    }
+
+    /**
      * Send a request to the API endpoint
      *
      * @param string $method  HTTP method
@@ -360,7 +389,7 @@ class Client
         // Check response content type match
         $contentType = $response->getHeaderLine('Content-Type');
         if ($contentType !== $acceptContentType) {
-            throw new Error\Generic("Invalid response data");
+            throw new Error\Generic(sprintf("Invalid response content type: %s", $contentType));
         }
 
         // Return the decoded JSON and let the caller create the appropriate result format

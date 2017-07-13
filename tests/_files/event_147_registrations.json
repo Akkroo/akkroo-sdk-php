@@ -1,0 +1,747 @@
+[
+  {
+    "values": {
+      "fullName": {
+        "value": "Joe Perry"
+      },
+      "email": {
+        "value": "joe@aerosmith.com"
+      },
+      "mobile": {
+        "value": "07521123456"
+      },
+      "twitter": {
+        "value": "JoePerry"
+      },
+      "dob": {
+        "value": "1962-05-12"
+      },
+      "emailMe": {
+        "value": true
+      },
+      "gender": {
+        "value": "Male"
+      },
+      "website": {
+        "value": "aerosmith.com"
+      },
+      "longText": {
+        "value": "Rag dolls living in someone else's movie"
+      },
+      "number": {
+        "value": 6
+      },
+      "multipleChoice": {
+        "value": "two"
+      },
+      "dropDown": {
+        "value": "two"
+      },
+      "checkboxes": {
+        "value": [
+          "three"
+        ]
+      },
+      "andTime": {
+        "value": "2017-05-12T15:51:54.223"
+      },
+      "starRating": {
+        "value": "3"
+      },
+      "linkCollection": {
+        "value": [
+          "https://entwickler.de/wp-content/uploads/2013/07/wpm_2013_07.pdf"
+        ]
+      },
+      "autocomplete": {
+        "value": "five"
+      },
+      "cameraField": {
+        "value": "c4597dc1-94ae-4576-11cc-755812c6dbfd",
+        "metadata": {
+          "uploadGUID": "c4597dc1-94ae-4576-11cc-755812c6dbfd"
+        }
+      },
+      "businessCard": {
+        "value": "69d9cee0-86d5-5f83-ecb4-25e069e718a0",
+        "metadata": {
+          "uploadGUID": "69d9cee0-86d5-5f83-ecb4-25e069e718a0",
+          "turkHitConfig": {
+            "hitID": "3K8CQCU3KE7J4RLSKKY0XPAF6N2NWF",
+            "hitTypeID": "35RL0GHNS7Z32QQX68XG5FM9XK8GE8",
+            "imageURL": "http://example-akkroo.com/uploads/turk/69d9cee0-86d5-5f83-ecb4-25e069e718a0.jpg",
+            "imageGUID": "69d9cee0-86d5-5f83-ecb4-25e069e718a0",
+            "questionID": "businessCard",
+            "requestID": "2862ed80-53ff-45b7-ab61-dd7f984f7829",
+            "createdTimestamp": 1494600891,
+            "firstRegImage": true
+          },
+          "turkResultData": {
+            "AssignmentId": "3F6KKYWMNC8NH5JUTRYCTLGABMRDNY",
+            "WorkerId": "A3OBO7EUPQZVCL",
+            "HITId": "3K8CQCU3KE7J4RLSKKY0XPAF6N2NWF",
+            "AssignmentStatus": "Submitted",
+            "AutoApprovalTime": "2017-05-17T15:06:04Z",
+            "AcceptTime": "2017-05-12T15:04:27Z",
+            "SubmitTime": "2017-05-12T15:06:04Z",
+            "Answer": {
+              "QuestionFormAnswers": {
+                "Answer": [
+                  {
+                    "QuestionIdentifier": "bcs_field_companyName",
+                    "FreeText": "Aerosmith LLC"
+                  },
+                  {
+                    "QuestionIdentifier": "bcs_field_fullName",
+                    "FreeText": "Joe Perry"
+                  },
+                  {
+                    "QuestionIdentifier": "bcs_field_jobTitle",
+                    "FreeText": "Guitarist"
+                  },
+                  {
+                    "QuestionIdentifier": "bcs_field_email",
+                    "FreeText": "joe@aerosmith.com"
+                  },
+                  {
+                    "QuestionIdentifier": "bcs_field_primaryPhoneNumber",
+                    "FreeText": "+4407521123456"
+                  },
+                  {
+                    "QuestionIdentifier": "bcs_field_secondaryPhoneNumber",
+                    "FreeText": "+4407521123456"
+                  },
+                  {
+                    "QuestionIdentifier": "bcs_field_secondaryPhoneNumberExtension",
+                    "FreeText": [
+                    ]
+                  },
+                  {
+                    "QuestionIdentifier": "bcs_field_website",
+                    "FreeText": "aerosmith.com"
+                  },
+                  {
+                    "QuestionIdentifier": "bcs_field_postalAddress5",
+                    "FreeText": "United Kingdom"
+                  },
+                  {
+                    "QuestionIdentifier": "bcs_field_postalCode",
+                    "FreeText": "SW1P 2AL"
+                  },
+                  {
+                    "QuestionIdentifier": "bcs_field_postalAddress1",
+                    "FreeText": "Ergon House"
+                  },
+                  {
+                    "QuestionIdentifier": "bcs_field_postalAddress2",
+                    "FreeText": "Horseferry Road"
+                  },
+                  {
+                    "QuestionIdentifier": "bcs_field_postalAddress3",
+                    "FreeText": "London"
+                  },
+                  {
+                    "QuestionIdentifier": "bcs_field_postalAddress4",
+                    "FreeText": "Greater London"
+                  },
+                  {
+                    "QuestionIdentifier": "imageOrientation",
+                    "FreeText": "1"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      },
+      "pdfViewer": {
+        "value": [
+          "https://entwickler.de/wp-content/uploads/2013/12/wpm_2013_12.pdf"
+        ]
+      },
+      "bcs_field_companyName": {
+        "value": "Aerosmith LLC"
+      },
+      "bcs_field_fullName": {
+        "value": "Joe Perry"
+      },
+      "fullName_1": {
+        "value": "Joe Perry"
+      },
+      "bcs_field_jobTitle": {
+        "value": "Guitarist"
+      },
+      "bcs_field_email": {
+        "value": "joe@aerosmith.com"
+      },
+      "email_1": {
+        "value": "joe@aerosmith.com"
+      },
+      "bcs_field_primaryPhoneNumber": {
+        "value": "+4407521123456"
+      },
+      "bcs_field_secondaryPhoneNumber": {
+        "value": "+440752123456"
+      },
+      "bcs_field_website": {
+        "value": "aerosmith.com"
+      },
+      "bcs_field_postalAddress5": {
+        "value": "United Kingdom"
+      },
+      "bcs_field_postalCode": {
+        "value": "SW1P 2AL"
+      },
+      "bcs_field_postalAddress1": {
+        "value": "Ergon House"
+      },
+      "bcs_field_postalAddress2": {
+        "value": "Horseferry Road"
+      },
+      "bcs_field_postalAddress3": {
+        "value": "London"
+      },
+      "bcs_field_postalAddress4": {
+        "value": "Greater London"
+      },
+      "imageOrientation": {
+        "value": "1"
+      }
+    },
+    "appUserID": 1461156126575,
+    "deviceID": "4907-1555-2983",
+    "isCheckIn": false,
+    "timeArrived": 1494600888865,
+    "eventID": 147,
+    "source": "API",
+    "APIClient": "App",
+    "lastModified": "Fri, 12 May 2017 15:08:05 GMT",
+    "created": "Fri, 12 May 2017 14:54:49 GMT",
+    "id": "5915ccb9279871a0058b4567"
+  },
+  {
+    "values": {
+      "fullName": {
+        "value": "Steve Tyler"
+      },
+      "email": {
+        "value": "steve@aerosmith.com"
+      },
+      "mobile": {
+        "value": "07521123456"
+      },
+      "twitter": {
+        "value": "Iamsteventyler"
+      },
+      "dob": {
+        "value": "1966-05-02"
+      },
+      "emailMe": {
+        "value": true
+      },
+      "gender": {
+        "value": "Male"
+      },
+      "website": {
+        "value": "aerosmith.com"
+      },
+      "longText": {
+        "value": "Rag dolls are living in a movie"
+      },
+      "number": {
+        "value": 7
+      },
+      "multipleChoice": {
+        "value": "one"
+      },
+      "dropDown": {
+        "value": "three"
+      },
+      "checkboxes": {
+        "value": [
+          "one"
+        ]
+      },
+      "andTime": {
+        "value": "2017-05-01T11:58:07"
+      },
+      "starRating": {
+        "value": "3"
+      },
+      "linkCollection": {
+        "value": [
+          "https://entwickler.de/wp-content/uploads/2013/12/wpm_2013_12.pdf"
+        ]
+      },
+      "autocomplete": {
+        "value": "five"
+      },
+      "cameraField": {
+        "value": "63190de1-b1ad-69bb-1820-12d721a5bbc8",
+        "metadata": {
+          "uploadGUID": "63190de1-b1ad-69bb-1820-12d721a5bbc8"
+        }
+      },
+      "businessCard": {
+        "value": "a7f0891c-4896-58ac-c41b-2edb2f405b92",
+        "metadata": {
+          "uploadGUID": "a7f0891c-4896-58ac-c41b-2edb2f405b92",
+          "turkHitConfig": {
+            "hitID": "3TFJJUELSHVE17QUHA0FT70E3ISC2F",
+            "hitTypeID": "35RL0GHNS7Z32QQX68XG5FM9XK8GE8",
+            "imageURL": "http://example-akkroo.com/uploads/turk/a7f0891c-4896-58ac-c41b-2edb2f405b92.jpg",
+            "imageGUID": "a7f0891c-4896-58ac-c41b-2edb2f405b92",
+            "questionID": "businessCard",
+            "requestID": "d6099a2f-2c1e-407d-94e8-9120e69dc42f",
+            "createdTimestamp": 1495547377,
+            "firstRegImage": true
+          },
+          "turkResultData": {
+            "AssignmentId": "30X31N5D64XMZB8NHDOW2EIADJBSAY",
+            "WorkerId": "A3OBO7EUPQZVCL",
+            "HITId": "3TFJJUELSHVE17QUHA0FT70E3ISC2F",
+            "AssignmentStatus": "Submitted",
+            "AutoApprovalTime": "2017-05-28T14:00:13Z",
+            "AcceptTime": "2017-05-23T13:58:56Z",
+            "SubmitTime": "2017-05-23T14:00:13Z",
+            "Answer": {
+              "QuestionFormAnswers": {
+                "Answer": [
+                  {
+                    "QuestionIdentifier": "bcs_field_companyName",
+                    "FreeText": "Neverland Ltd"
+                  },
+                  {
+                    "QuestionIdentifier": "bcs_field_fullName",
+                    "FreeText": "Peter Pan"
+                  },
+                  {
+                    "QuestionIdentifier": "bcs_field_jobTitle",
+                    "FreeText": "Owner"
+                  },
+                  {
+                    "QuestionIdentifier": "bcs_field_email",
+                    "FreeText": "steve@aerosmith.com"
+                  },
+                  {
+                    "QuestionIdentifier": "bcs_field_primaryPhoneNumber",
+                    "FreeText": "+4407521123456"
+                  },
+                  {
+                    "QuestionIdentifier": "bcs_field_secondaryPhoneNumber",
+                    "FreeText": "+440752123456"
+                  },
+                  {
+                    "QuestionIdentifier": "bcs_field_secondaryPhoneNumberExtension",
+                    "FreeText": "123"
+                  },
+                  {
+                    "QuestionIdentifier": "bcs_field_website",
+                    "FreeText": [
+                    ]
+                  },
+                  {
+                    "QuestionIdentifier": "bcs_field_postalAddress5",
+                    "FreeText": "United Kingdom"
+                  },
+                  {
+                    "QuestionIdentifier": "bcs_field_postalCode",
+                    "FreeText": "SW1P 2AL"
+                  },
+                  {
+                    "QuestionIdentifier": "bcs_field_postalAddress1",
+                    "FreeText": "Ergon House"
+                  },
+                  {
+                    "QuestionIdentifier": "bcs_field_postalAddress2",
+                    "FreeText": "Horseferry Road"
+                  },
+                  {
+                    "QuestionIdentifier": "bcs_field_postalAddress3",
+                    "FreeText": "London"
+                  },
+                  {
+                    "QuestionIdentifier": "bcs_field_postalAddress4",
+                    "FreeText": "Greater London"
+                  },
+                  {
+                    "QuestionIdentifier": "imageOrientation",
+                    "FreeText": "1"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      },
+      "pdfViewer": {
+        "value": [
+          "https://entwickler.de/wp-content/uploads/2013/12/wpm_2013_12.pdf"
+        ]
+      },
+      "bcs_field_companyName": {
+        "value": "Neverland Ltd"
+      },
+      "bcs_field_fullName": {
+        "value": "Peter Pan"
+      },
+      "fullName_1": {
+        "value": "Peter Pan"
+      },
+      "bcs_field_jobTitle": {
+        "value": "Owner"
+      },
+      "bcs_field_email": {
+        "value": "steve@aerosmith.com"
+      },
+      "email_1": {
+        "value": "steve@aerosmith.com"
+      },
+      "bcs_field_primaryPhoneNumber": {
+        "value": "+4407521123456"
+      },
+      "bcs_field_secondaryPhoneNumber": {
+        "value": "+4407521123456"
+      },
+      "bcs_field_secondaryPhoneNumberExtension": {
+        "value": "123"
+      },
+      "bcs_field_postalAddress5": {
+        "value": "United Kingdom"
+      },
+      "bcs_field_postalCode": {
+        "value": "SW1P 2AL"
+      },
+      "bcs_field_postalAddress1": {
+        "value": "Ergon House"
+      },
+      "bcs_field_postalAddress2": {
+        "value": "Horseferry Road"
+      },
+      "bcs_field_postalAddress3": {
+        "value": "London"
+      },
+      "bcs_field_postalAddress4": {
+        "value": "Greater London"
+      },
+      "imageOrientation": {
+        "value": "1"
+      }
+    },
+    "appUserID": 1461156126575,
+    "deviceID": "4907-1555-2983",
+    "isCheckIn": false,
+    "timeArrived": 1494600377971,
+    "eventID": 147,
+    "source": "API",
+    "APIClient": "App",
+    "lastModified": "Tue, 23 May 2017 14:02:43 GMT",
+    "created": "Tue, 23 May 2017 13:49:34 GMT",
+    "id": "59243dee279871a6058b4567"
+  },
+  {
+    "values": {
+      "fullName": {
+        "value": "Dave Mushrooms"
+      },
+      "email": {
+        "value": "dave@megadent.com"
+      },
+      "mobile": {
+        "value": "07521123456"
+      },
+      "twitter": {
+        "value": "DDave"
+      },
+      "dob": {
+        "value": "1977-10-13"
+      },
+      "emailMe": {
+        "value": true
+      },
+      "gender": {
+        "value": "Male"
+      },
+      "website": {
+        "value": "http://megadent.com"
+      },
+      "longText": {
+        "value": "Not so long to be a long text..."
+      },
+      "number": {
+        "value": 123
+      },
+      "multipleChoice": {
+        "value": "two"
+      },
+      "dropDown": {
+        "value": "one"
+      },
+      "checkboxes": {
+        "value": [
+          "three"
+        ]
+      },
+      "andTime": {
+        "value": "2017-04-18T09:58:12.254"
+      },
+      "starRating": {
+        "value": "4"
+      },
+      "linkCollection": {
+        "value": [
+          "https://entwickler.de/wp-content/uploads/2013/12/wpm_2013_12.pdf"
+        ]
+      },
+      "cameraField": {
+        "value": "2f75590c-4d84-2c1f-6281-c4f81f73cafa",
+        "metadata": {
+          "uploadGUID": "2f75590c-4d84-2c1f-6281-c4f81f73cafa"
+        }
+      },
+      "pdfViewer": {
+        "value": [
+          "https://entwickler.de/wp-content/uploads/2013/12/wpm_2013_12.pdf"
+        ]
+      }
+    },
+    "appUserID": 1461156126575,
+    "deviceID": "4907-1555-2983",
+    "isCheckIn": false,
+    "timeArrived": 1492505999192,
+    "eventID": 147,
+    "source": "API",
+    "APIClient": "App",
+    "lastModified": "Thu, 15 Jun 2017 08:36:06 GMT",
+    "created": "Tue, 18 Apr 2017 08:59:59 GMT",
+    "starred": null,
+    "comments": "Hello Dave!",
+    "id": "58f5d58f279871a6058b4567"
+  },
+  {
+    "values": {
+      "fullName": {
+        "value": "John Osbourne"
+      },
+      "email": {
+        "value": "ozzy@blacksabbath.co.uk"
+      },
+      "mobile": {
+        "value": "07521123456"
+      },
+      "twitter": {
+        "value": "Ozzy"
+      },
+      "dob": {
+        "value": "1960-04-19"
+      },
+      "emailMe": {
+        "value": true
+      },
+      "gender": {
+        "value": "he"
+      },
+      "website": {
+        "value": "blacksabbath.co.uk"
+      },
+      "longText": {
+        "value": "Finished with my woman 'cause she couldn't help me with my mind"
+      },
+      "number": {
+        "value": 666
+      },
+      "multipleChoice": {
+        "value": "two"
+      },
+      "dropDown": {
+        "value": "two"
+      },
+      "checkboxes": {
+        "value": [
+          "three"
+        ]
+      },
+      "andTime": {
+        "value": "2017-04-19T10:35:06.142"
+      },
+      "starRating": {
+        "value": "4"
+      },
+      "linkCollection": {
+        "value": [
+          "https://entwickler.de/wp-content/uploads/2013/07/wpm_2013_07.pdf",
+          "https://entwickler.de/wp-content/uploads/2013/12/wpm_2013_12.pdf"
+        ]
+      },
+      "autocomplete": {
+        "value": "four"
+      },
+      "cameraField": {
+        "value": "a0030bc1-a9ce-ac83-73d1-09876057e043",
+        "metadata": {
+          "uploadGUID": "a0030bc1-a9ce-ac83-73d1-09876057e043"
+        }
+      },
+      "businessCard": {
+        "value": "e1a87224-c45a-3da7-7a89-cfb404dafb39",
+        "metadata": {
+          "uploadGUID": "e1a87224-c45a-3da7-7a89-cfb404dafb39",
+          "turkHitConfig": {
+            "hitID": "3FCO4VKOZ4J0K67EJDN5FMHPYQVE7P",
+            "hitTypeID": "35RL0GHNS7Z32QQX68XG5FM9XK8GE8",
+            "imageURL": "http://example-akkroo.com/uploads/turk/e1a87224-c45a-3da7-7a89-cfb404dafb39.jpg",
+            "imageGUID": "e1a87224-c45a-3da7-7a89-cfb404dafb39",
+            "questionID": "businessCard",
+            "requestID": "ffb3c2c0-2b42-46a7-833e-e8fec2ef4057",
+            "createdTimestamp": 1492594739,
+            "firstRegImage": true
+          },
+          "turkResultData": {
+            "AssignmentId": "3FQ5JJ512MVVVBP4L8KZXYB0VOTNKC",
+            "WorkerId": "A3OBO7EUPQZVCL",
+            "HITId": "3FCO4VKOZ4J0K67EJDN5FMHPYQVE7P",
+            "AssignmentStatus": "Submitted",
+            "AutoApprovalTime": "2017-04-24T09:40:26Z",
+            "AcceptTime": "2017-04-19T09:39:16Z",
+            "SubmitTime": "2017-04-19T09:40:26Z",
+            "Answer": {
+              "QuestionFormAnswers": {
+                "Answer": [
+                  {
+                    "QuestionIdentifier": "bcs_field_companyName",
+                    "FreeText": "Black Sabbath Ltd"
+                  },
+                  {
+                    "QuestionIdentifier": "bcs_field_fullName",
+                    "FreeText": "John Michael Osbourne"
+                  },
+                  {
+                    "QuestionIdentifier": "bcs_field_jobTitle",
+                    "FreeText": "Front Man"
+                  },
+                  {
+                    "QuestionIdentifier": "bcs_field_email",
+                    "FreeText": "ozzy@blacksabbath.co.uk"
+                  },
+                  {
+                    "QuestionIdentifier": "bcs_field_primaryPhoneNumber",
+                    "FreeText": "+440752123456"
+                  },
+                  {
+                    "QuestionIdentifier": "bcs_field_secondaryPhoneNumber",
+                    "FreeText": "+440752123456"
+                  },
+                  {
+                    "QuestionIdentifier": "bcs_field_secondaryPhoneNumberExtension",
+                    "FreeText": "666"
+                  },
+                  {
+                    "QuestionIdentifier": "bcs_field_website",
+                    "FreeText": "http://blacksabbath.co.uk"
+                  },
+                  {
+                    "QuestionIdentifier": "bcs_field_postalAddress5",
+                    "FreeText": "United Kingdom"
+                  },
+                  {
+                    "QuestionIdentifier": "bcs_field_postalCode",
+                    "FreeText": "SW1P 2AL"
+                  },
+                  {
+                    "QuestionIdentifier": "bcs_field_postalAddress1",
+                    "FreeText": "Ergon House"
+                  },
+                  {
+                    "QuestionIdentifier": "bcs_field_postalAddress2",
+                    "FreeText": "Horseferry Road"
+                  },
+                  {
+                    "QuestionIdentifier": "bcs_field_postalAddress3",
+                    "FreeText": "London"
+                  },
+                  {
+                    "QuestionIdentifier": "bcs_field_postalAddress4",
+                    "FreeText": "Greater London"
+                  },
+                  {
+                    "QuestionIdentifier": "imageOrientation",
+                    "FreeText": "1"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      },
+      "pdfViewer": {
+        "value": [
+          "https://entwickler.de/wp-content/uploads/2013/12/wpm_2013_12.pdf",
+          "https://entwickler.de/wp-content/uploads/2013/07/wpm_2013_07.pdf"
+        ]
+      },
+      "bcs_field_companyName": {
+        "value": "Black Sabbath LLP"
+      },
+      "bcs_field_fullName": {
+        "value": "John Michael Osbourne"
+      },
+      "fullName_1": {
+        "value": "John Michael Osbourne"
+      },
+      "bcs_field_jobTitle": {
+        "value": "Singer"
+      },
+      "bcs_field_email": {
+        "value": "ozzy@blacksabbath.co.uk"
+      },
+      "email_1": {
+        "value": "ozzy@blacksabbath.co.uk"
+      },
+      "bcs_field_primaryPhoneNumber": {
+        "value": "+440752123456"
+      },
+      "bcs_field_secondaryPhoneNumber": {
+        "value": "+440752123456"
+      },
+      "bcs_field_secondaryPhoneNumberExtension": {
+        "value": "666"
+      },
+      "bcs_field_website": {
+        "value": "http://blacksabbath.co.uk"
+      },
+      "bcs_field_postalAddress5": {
+        "value": "United Kingdom"
+      },
+      "bcs_field_postalCode": {
+        "value": "SW1P 2AL"
+      },
+      "bcs_field_postalAddress1": {
+        "value": "Ergon House"
+      },
+      "bcs_field_postalAddress2": {
+        "value": "Horseferry Road"
+      },
+      "bcs_field_postalAddress3": {
+        "value": "London"
+      },
+      "bcs_field_postalAddress4": {
+        "value": "Greater London"
+      },
+      "imageOrientation": {
+        "value": "1"
+      }
+    },
+    "appUserID": 1461156126575,
+    "deviceID": "4907-1555-2983",
+    "isCheckIn": false,
+    "timeArrived": 1492594738390,
+    "eventID": 147,
+    "source": "API",
+    "APIClient": "App",
+    "lastModified": "Wed, 12 Jul 2017 15:00:17 GMT",
+    "created": "Wed, 19 Apr 2017 09:38:58 GMT",
+    "starred": 1,
+    "comments": "People think he's insane because\n\nhe is frowning all the time",
+    "id": "58f73032279871a5058b4567"
+  }
+]

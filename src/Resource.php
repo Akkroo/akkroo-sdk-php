@@ -14,6 +14,9 @@ class Resource extends Result
             case 'events':
                 $resourceClass = Event::class;
                 break;
+            case 'registrations':
+                $resourceClass = Registration::class;
+                break;
             default:
                 throw new InvalidArgumentException(sprintf('Unknown resource "%s"', $resourceName));
         }
