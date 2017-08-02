@@ -321,7 +321,10 @@ class ClientTest extends TestCase
         $response = $this->responseFactory->createResponse(
             200,
             'No Error',
-            ['Content-Type' => $this->defaultResponseContentType],
+            [
+                'Content-Type' => $this->defaultResponseContentType,
+                'Content-Range' => 'resources 0-2/2'
+            ],
             file_get_contents($this->dataDir . '/event_147_registrations.json')
         );
         $this->httpClient->addResponse($response);
@@ -332,7 +335,8 @@ class ClientTest extends TestCase
             'createdFrom' => time(),
             'createdTo' => time(),
             'lastModifiedFrom' => time(),
-            'lastModifiedTo' => time()
+            'lastModifiedTo' => time(),
+            'range' => [0, 2]
         ]);
         $this->assertInstanceOf(Collection::class, $registrations);
         $this->assertInstanceOf(Registration::class, $registrations[0]);

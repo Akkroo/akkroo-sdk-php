@@ -128,7 +128,7 @@ class Client
      *
      * @param  string $resource Resource name (i.e. events, registrations)
      * @param  array  $params   Search parameters (i.e. id, event_id, search query, range, fields, sort)
-     * @param array  $headers Additional headers
+     * @param  array  $headers Additional headers
      *
      * @return Akkroo\Collection | Akkroo\Resource
      *
@@ -139,6 +139,9 @@ class Client
     public function get($resource, array $params = [], array $headers = [])
     {
         $path = $this->buildPath($resource, $params);
+        if (!empty($params['range']) && !empty($params['range'][1])) {
+            $headers['Range'] = sprintf('resources=%d-%d', $params['range'][0], $params['range'][1]);
+        }
         $result = $this->request('GET', $path, $headers, $params);
         return Resource::create($resource, $result['data'])->withRequestID($result['requestID']);
     }
