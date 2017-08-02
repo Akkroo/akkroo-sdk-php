@@ -249,6 +249,26 @@ class ClientTest extends TestCase
         $this->assertInstanceOf(Event::class, $events[0]);
     }
 
+    public function testEventsCollectionWithParameters()
+    {
+        $response = $this->responseFactory->createResponse(
+            200,
+            'No Error',
+            ['Content-Type' => $this->defaultResponseContentType],
+            file_get_contents($this->dataDir . '/events.json')
+        );
+        $this->httpClient->addResponse($response);
+        $events = $this->client->get('events', [
+            'lastModifiedFrom' => time(),
+            'lastModifiedTo' => time(),
+            'registrationsLastModifiedFrom' => time(),
+            'registrationsLastModifiedTo' => time(),
+            'fields' => ['id', 'name']
+        ]);
+        $this->assertInstanceOf(Collection::class, $events);
+        $this->assertInstanceOf(Event::class, $events[0]);
+    }
+
     public function testSingleEvent()
     {
         $response = $this->responseFactory->createResponse(
@@ -292,6 +312,28 @@ class ClientTest extends TestCase
         );
         $this->httpClient->addResponse($response);
         $registrations = $this->client->get('registrations', ['event_id' => 147]);
+        $this->assertInstanceOf(Collection::class, $registrations);
+        $this->assertInstanceOf(Registration::class, $registrations[0]);
+    }
+
+    public function testEventRegistrationsWithParameters()
+    {
+        $response = $this->responseFactory->createResponse(
+            200,
+            'No Error',
+            ['Content-Type' => $this->defaultResponseContentType],
+            file_get_contents($this->dataDir . '/event_147_registrations.json')
+        );
+        $this->httpClient->addResponse($response);
+        $registrations = $this->client->get('registrations', [
+            'event_id' => 147,
+            'isCheckIn' => true,
+            'hasArrived' => false,
+            'createdFrom' => time(),
+            'createdTo' => time(),
+            'lastModifiedFrom' => time(),
+            'lastModifiedTo' => time()
+        ]);
         $this->assertInstanceOf(Collection::class, $registrations);
         $this->assertInstanceOf(Registration::class, $registrations[0]);
     }

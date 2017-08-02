@@ -139,7 +139,7 @@ class Client
     public function get($resource, array $params = [], array $headers = [])
     {
         $path = $this->buildPath($resource, $params);
-        $result = $this->request('GET', $path, $headers);
+        $result = $this->request('GET', $path, $headers, $params);
         return Resource::create($resource, $result['data'])->withRequestID($result['requestID']);
     }
 
@@ -320,7 +320,7 @@ class Client
 
     /**
      * @param string $resource Main resource path
-     * @param array  $params   URL and querystring path
+     * @param array  $params   URL and querystring parameters
      * @return string
      */
     protected function buildPath($resource, array $params = [])
@@ -343,6 +343,44 @@ class Client
                 break;
         }
         return $path;
+    }
+
+    /**
+     * @param array  $params   URL and querystring parameters
+     * @return string
+     */
+    protected function buildQuery(array $params)
+    {
+        // Add querystring parameters
+        $query = [];
+        foreach ($params as $key => $value) {
+            // Exclude URL and range values
+            if (in_array($key, ['id', 'event_id', 'range'])) {
+                continue;
+            }
+            if ($key === 'fields' && is_array($value)) {
+                $query[$key] = implode(',', $value);
+                continue;
+            }
+            if ($value === true) {
+                $query[$key] = 'true';
+                continue;
+            }
+            if ($value === false) {
+                $query[$key] = 'false';
+                continue;
+            }
+            $query[$key] = $value;
+        }
+        // Decode unreserved characters adding ',' to the list
+        // see https://github.com/guzzle/psr7/blob/master/README.md#guzzlehttppsr7urinormalizernormalize
+        return preg_replace_callback(
+            '/%(?:2C|2D|2E|5F|7E|3[0-9]|[46][1-9A-F]|[57][0-9A])/i',
+            function (array $match) {
+                return rawurldecode($match[0]);
+            },
+            http_build_query($query)
+        );
     }
 
     /**
@@ -376,7 +414,7 @@ class Client
 
         // Creating URI: URI params must be already provided by the calling method
         $uri = $this->uriFactory->createUri($this->options['endpoint'])
-            ->withPath($path);
+            ->withPath($path)->withQuery($this->buildQuery($params));
 
         // Create and send a request
         $this->logger->debug('Sending request', [
