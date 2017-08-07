@@ -397,4 +397,56 @@ class ClientTest extends TestCase
         $this->httpClient->addResponse($response);
         $result = $this->client->test();
     }
+
+    public function testValidResourceCount()
+    {
+        $response = $this->responseFactory->createResponse(
+            206,
+            'Partial Content',
+            [
+                'Content-Type' => $this->defaultResponseContentType,
+                'Content-Range' => 'resources 0-0/4'
+            ]
+        );
+        $this->httpClient->addResponse($response);
+        $result = $this->client->count('registrations', ['event_id' => 157]);
+        $this->assertInstanceOf(Result::class, $result);
+        $this->assertNotEmpty($result->count);
+        $this->assertEquals(4, $result->count);
+    }
+
+    /**
+     * @expectedException Akkroo\Error\Generic
+     * @expectedExceptionCode 400
+     * @expectedExceptionMessage Missing range headers
+     */
+    public function testResourceCountErrorOnMissingContentRange()
+    {
+        $response = $this->responseFactory->createResponse(
+            206,
+            'Partial Content',
+            ['Content-Type' => $this->defaultResponseContentType]
+        );
+        $this->httpClient->addResponse($response);
+        $result = $this->client->count('registrations', ['event_id' => 157]);
+    }
+
+    /**
+     * @expectedException Akkroo\Error\Generic
+     * @expectedExceptionCode 400
+     * @expectedExceptionMessage Invalid content range
+     */
+    public function testResourceCountErrorOnInvalidContentRange()
+    {
+        $response = $this->responseFactory->createResponse(
+            206,
+            'Partial Content',
+            [
+                'Content-Type' => $this->defaultResponseContentType,
+                'Content-Range' => 'resources 0-0'
+            ]
+        );
+        $this->httpClient->addResponse($response);
+        $result = $this->client->count('registrations', ['event_id' => 157]);
+    }
 }

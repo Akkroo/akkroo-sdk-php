@@ -211,13 +211,26 @@ class Client
      *
      * @param  string $resource Resource name (i.e. events, registrations)
      * @param  array  $params   URL parameters (i.e. id, event_id)
+     *
      * @return Akkroo\Result
+     *
      * @throws Error\Authentication
      * @throws Error\NotFound
      * @throws Error\Generic
      */
     public function count($resource, $params = [])
     {
+        $path = $this->buildPath($resource, $params);
+        $result = $this->request('HEAD', $path, [], $params);
+        if (empty($result['headers']['Content-Range'])) {
+            throw new Error\Generic('Missing range headers');
+        }
+        $contentRange = explode('/', $result['headers']['Content-Range'][0]);
+        if (count($contentRange) < 2) {
+            throw new Error\Generic('Invalid content range');
+        }
+        $count = (int) $contentRange[1];
+        return (new Result(['count' => $count]))->withRequestID($result['requestID']);
     }
 
     /**
@@ -282,7 +295,8 @@ class Client
         $status = $response->getStatusCode();
         $reason = $response->getReasonPhrase();
         $body = [
-            'data' => $this->parseResponseBody($response)
+            'data' => $this->parseResponseBody($response),
+            'headers' => $response->getHeaders()
         ];
         if (!empty($requestID)) {
             $body['requestID'] = $requestID;
