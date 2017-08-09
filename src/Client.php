@@ -151,7 +151,8 @@ class Client
      *
      * @param  string $resource Resource name (i.e. events, registrations)
      * @param  array  $data     Resource data
-     * @param  array  $headers Additional headers
+     * @param  array  $params   Search parameters (i.e. id, event_id, search query, range, fields, sort)
+     * @param  array  $headers  Additional headers
      *
      * @return Akkroo\Resource
      *
@@ -159,15 +160,15 @@ class Client
      * @throws Error\NotFound
      * @throws Error\Generic
      */
-    public function post($resource, array $data, array $headers = [])
+    public function post($resource, array $data, array $params = [], array $headers = [])
     {
-        $path = $this->buildPath($resource);
+        $path = $this->buildPath($resource, $params);
         $result = $this->request('POST', $path, $headers);
         // Store temporary resource containing only ID
         $tmp = Resource::create($resource, $result['data'])->withRequestID($result['requestID']);
         // Fetch data for inserted resource: use same request ID, so the server could avoid
         // inserting a duplicate
-        return $this->get($resource, ['id' => $tmp->id], ['Request-ID' => $tmp->requestID]);
+        return $this->get($resource, array_merge($params, ['id' => $tmp->id]), ['Request-ID' => $tmp->requestID]);
     }
 
     /**

@@ -1,0 +1,18 @@
+{
+  "values": {
+    "email": {
+      "value": "username@example.com"
+    },
+    "fullName": {
+      "value": "Joe Bloggs"
+    }
+  },
+  "timeArrived": 1502292453332,
+  "isCheckIn": false,
+  "eventID": 134,
+  "source": "API",
+  "APIClient": "wexler",
+  "lastModified": "Wed, 09 Aug 2017 15:33:36 GMT",
+  "created": "Wed, 09 Aug 2017 15:33:36 GMT",
+  "id": "598b2b50279871ce058b4567"
+}

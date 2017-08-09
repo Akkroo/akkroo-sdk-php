@@ -500,6 +500,63 @@ class ClientTest extends TestCase
             $errorDetails = $e->getDetails();
             $this->assertInternalType('array', $errorDetails);
             $this->assertEquals('date', $errorDetails[0]['attribute']);
+            $this->assertEquals('tooSmall', $errorDetails[0]['type']);
+        }
+    }
+
+    public function testSuccessfulNewRegistrationCreation()
+    {
+        $data = json_decode(file_get_contents($this->dataDir . '/event_134_new_registration.json'), true);
+        $data['timeArrived'] = ((int) (microtime(true) * 1000)); // Javascript timestamp
+
+        $response = $this->responseFactory->createResponse(
+            201,
+            'Created',
+            ['Content-Type' => $this->defaultResponseContentType],
+            json_encode([
+                'id' => '598b2b50279871ce058b4567'
+            ])
+        );
+        $this->httpClient->addResponse($response);
+
+        $response = $this->responseFactory->createResponse(
+            200,
+            'No Error',
+            ['Content-Type' => $this->defaultResponseContentType],
+            file_get_contents($this->dataDir . '/event_134_registration_598b2b50279871ce058b4567.json')
+        );
+        $this->httpClient->addResponse($response);
+
+        $registration = $this->client->post('registrations', $data, ['event_id' => 134]);
+
+        $this->assertInstanceOf(Registration::class, $registration);
+        $this->assertEquals('598b2b50279871ce058b4567', $registration->id);
+        $this->assertEquals(134, $registration->eventID);
+        $this->assertEquals('API', $registration->source);
+    }
+
+    public function testRegistrationValidationErrors()
+    {
+        $data = json_decode(file_get_contents($this->dataDir . '/event_134_new_registration.json'), true);
+        $data['timeArrived'] = ((int) (microtime(true) * 1000)); // Javascript timestamp
+        unset($data['isCheckIn']); // Deleting a required field
+        $response = $this->responseFactory->createResponse(
+            400,
+            'Bad Request',
+            ['Content-Type' => $this->defaultResponseContentType],
+            file_get_contents($this->dataDir . '/registration_validation_errors.json')
+        );
+        $this->httpClient->addResponse($response);
+        try {
+            $registration = $this->client->post('registrations', $data, ['event_id' => 134]);
+        } catch (\Exception $e) {
+            $this->assertInstanceOf(\Akkroo\Error\Validation::class, $e);
+            $this->assertEquals(400, $e->getCode());
+            $this->assertEquals('One or more validation errors occured', $e->getMessage());
+            $errorDetails = $e->getDetails();
+            $this->assertInternalType('array', $errorDetails);
+            $this->assertEquals('isCheckIn', $errorDetails[0]['attribute']);
+            $this->assertEquals('mustBeSet', $errorDetails[0]['type']);
         }
     }
 }

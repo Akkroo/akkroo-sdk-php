@@ -1,0 +1,12 @@
+{
+	"values": {
+		"email": {
+			"value": "username@example.com"
+		},
+		"fullName": {
+			"value": "Joe Bloggs"
+		}
+	},
+	"timeArrived": 1502292453332,
+	"isCheckIn":false
+}

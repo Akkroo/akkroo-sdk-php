@@ -1,0 +1,15 @@
+{
+	"error": "validationError",
+	"details": {
+		"errors": [
+			{
+				"attribute": "isCheckIn",
+				"type": "mustBeSet",
+				"parameters": [
+
+				]
+			}
+		]
+	},
+	"message": "One or more validation errors occured"
+}
