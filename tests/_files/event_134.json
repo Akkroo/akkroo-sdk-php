@@ -1,0 +1,28 @@
+{
+	"name": "SDK test",
+	"type": 5,
+	"status": 1,
+	"date": "2017-08-08",
+	"tags": [
+		"Test event"
+	],
+	"preRegEndDate": "2017-08-07",
+	"preRegMaxCount": 60,
+	"questions": [
+		{
+			"type": "text",
+			"label": "Full Name",
+			"required": true,
+			"autoCorrect": "off",
+			"autoCapitalize": "words",
+			"id": "fullName"
+		},
+		{
+			"type": "email",
+			"label": "Email",
+			"required": true,
+			"autoCorrect": "off",
+			"id": "email"
+		}
+	]
+}

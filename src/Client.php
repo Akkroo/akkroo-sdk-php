@@ -151,13 +151,23 @@ class Client
      *
      * @param  string $resource Resource name (i.e. events, registrations)
      * @param  array  $data     Resource data
+     * @param  array  $headers Additional headers
+     *
      * @return Akkroo\Resource
+     *
      * @throws Error\Authentication
      * @throws Error\NotFound
      * @throws Error\Generic
      */
-    public function post($resource, array $data)
+    public function post($resource, array $data, array $headers = [])
     {
+        $path = $this->buildPath($resource);
+        $result = $this->request('POST', $path, $headers);
+        // Store temporary resource containing only ID
+        $tmp = Resource::create($resource, $result['data'])->withRequestID($result['requestID']);
+        // Fetch data for inserted resource: use same request ID, so the server could avoid
+        // inserting a duplicate
+        return $this->get($resource, ['id' => $tmp->id], ['Request-ID' => $tmp->requestID]);
     }
 
     /**
@@ -316,6 +326,9 @@ class Client
                 // 3xx redirect status must be managed by the HTTP Client
                 // Statuses other that what we define success are automatic errors
                 if (!in_array($status, [200, 201, 202, 203, 204, 205, 206])) {
+                    if ($body['data']['error'] === 'validationError') {
+                        throw new Error\Validation('Validation Error', $status, $body);
+                    }
                     throw new Error\Generic($reason, $status, $body);
                 }
                 break;

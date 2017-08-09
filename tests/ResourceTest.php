@@ -45,6 +45,7 @@ class ResourceTest extends TestCase
     {
         $event = Resource::create('events', ['id' => 123, 'name' => 'Some Event']);
         $this->assertInstanceOf(Event::class, $event);
+        $this->assertEquals(123, $event->id);
         $this->assertEquals('Some Event', $event->name);
         $event->name = 'Another Event';
         $this->assertEquals('Another Event', $event->name);

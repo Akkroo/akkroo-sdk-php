@@ -1,0 +1,16 @@
+{
+	"error": "validationError",
+	"details": {
+		"errors": [
+			{
+				"attribute": "date",
+				"type": "tooSmall",
+				"parameters": {
+					"value": "2015-09-26",
+					"minVal": "2017-08-07"
+				}
+			}
+		]
+	},
+	"message": "One or more validation errors occured"
+}

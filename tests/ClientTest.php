@@ -449,4 +449,57 @@ class ClientTest extends TestCase
         $this->httpClient->addResponse($response);
         $result = $this->client->count('registrations', ['event_id' => 157]);
     }
+
+    public function testSuccessfulNewEventCreation()
+    {
+        $data = json_decode(file_get_contents($this->dataDir . '/event_134.json'), true);
+        $data['date'] = date('Y-m-d', strtotime('tomorrow'));
+        $data['preRegEndDate'] = date('Y-m-d', strtotime('today'));
+
+        $response = $this->responseFactory->createResponse(
+            201,
+            'Created',
+            ['Content-Type' => $this->defaultResponseContentType],
+            json_encode([
+                'id' => 134
+            ])
+        );
+        $this->httpClient->addResponse($response);
+
+        $response = $this->responseFactory->createResponse(
+            200,
+            'No Error',
+            ['Content-Type' => $this->defaultResponseContentType],
+            json_encode(array_merge(['id' => 134], $data))
+        );
+        $this->httpClient->addResponse($response);
+
+        $event = $this->client->post('events', $data);
+
+        $this->assertInstanceOf(Event::class, $event);
+        $this->assertEquals(134, $event->id);
+        $this->assertEquals($data['name'], $event->name);
+    }
+
+    public function testEventValidationErrors()
+    {
+        $data = json_decode(file_get_contents($this->dataDir . '/event_134.json'), true);
+        $response = $this->responseFactory->createResponse(
+            400,
+            'Bad Request',
+            ['Content-Type' => $this->defaultResponseContentType],
+            file_get_contents($this->dataDir . '/event_validation_errors.json')
+        );
+        $this->httpClient->addResponse($response);
+        try {
+            $event = $this->client->post('events', $data);
+        } catch (\Exception $e) {
+            $this->assertInstanceOf(\Akkroo\Error\Validation::class, $e);
+            $this->assertEquals(400, $e->getCode());
+            $this->assertEquals('One or more validation errors occured', $e->getMessage());
+            $errorDetails = $e->getDetails();
+            $this->assertInternalType('array', $errorDetails);
+            $this->assertEquals('date', $errorDetails[0]['attribute']);
+        }
+    }
 }
