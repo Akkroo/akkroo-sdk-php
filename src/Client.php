@@ -250,6 +250,31 @@ class Client
     }
 
     /**
+     * Get allowed HTTP methods for a resource
+     *
+     * @param  string $resource Resource name (i.e. events, registrations)
+     * @param  array  $params   URL parameters (i.e. id, event_id)
+     *
+     * @return Akkroo\Result
+     *
+     * @throws Error\Authentication
+     * @throws Error\NotFound
+     * @throws Error\Generic
+     */
+    public function options($resource, $params = [])
+    {
+        $path = $this->buildPath($resource, $params);
+        $result = $this->request('OPTIONS', $path);
+        if (empty($result['headers']['Allow'])) {
+            throw new Error\Generic('Missing allow header');
+        }
+        $allow = array_map(function ($item) {
+            return trim($item);
+        }, explode(',', $result['headers']['Allow'][0]));
+        return (new Result(['success' => true, 'allow' => $allow]))->withRequestID($result['requestID']);
+    }
+
+    /**
      * Send a test API request
      *
      * @param array  $headers Additional headers

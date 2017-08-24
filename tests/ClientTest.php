@@ -602,4 +602,23 @@ class ClientTest extends TestCase
         $this->assertTrue($result->success);
         $this->assertNotEmpty($result->requestID);
     }
+
+    public function testOptionsMethod()
+    {
+        $response = $this->responseFactory->createResponse(
+            204,
+            'No Content',
+            [
+                'Content-Type' => $this->defaultResponseContentType,
+                'Allow' => 'OPTIONS, PUT, PATCH, DELETE, HEAD, GET'
+            ]
+        );
+        $this->httpClient->addResponse($response);
+        $result = $this->client->options('events', ['id' => 134]);
+        $this->assertInstanceOf(Result::class, $result);
+        $this->assertTrue($result->success);
+        $this->assertNotEmpty($result->requestID);
+        $this->assertInternalType('array', $result->allow);
+        $this->assertEquals(['OPTIONS', 'PUT', 'PATCH', 'DELETE', 'HEAD', 'GET'], $result->allow);
+    }
 }
