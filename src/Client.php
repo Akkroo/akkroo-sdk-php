@@ -208,13 +208,18 @@ class Client
      *
      * @param  string $resource Resource name (i.e. events, registrations)
      * @param  array  $params   URL parameters (i.e. id, event_id)
+     *
      * @return Akkroo\Result
+     *
      * @throws Error\Authentication
      * @throws Error\NotFound
      * @throws Error\Generic
      */
     public function delete($resource, array $params = [])
     {
+        $path = $this->buildPath($resource, $params);
+        $result = $this->request('DELETE', $path);
+        return (new Result(['success' => true]))->withRequestID($result['requestID']);
     }
 
     /**

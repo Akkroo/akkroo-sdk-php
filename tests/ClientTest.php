@@ -559,4 +559,47 @@ class ClientTest extends TestCase
             $this->assertEquals('mustBeSet', $errorDetails[0]['type']);
         }
     }
+
+    public function testSuccessfulEventDeletion()
+    {
+        $response = $this->responseFactory->createResponse(
+            204,
+            'No Content',
+            ['Content-Type' => $this->defaultResponseContentType]
+        );
+        $this->httpClient->addResponse($response);
+        $result = $this->client->delete('events', ['id' => 134]);
+        $this->assertInstanceOf(Result::class, $result);
+        $this->assertTrue($result->success);
+        $this->assertNotEmpty($result->requestID);
+    }
+
+    /**
+     * @expectedException Akkroo\Error\NotFound
+     * @expectedExceptionCode 404
+     */
+    public function testErrorOnEventDeletion()
+    {
+        $response = $this->responseFactory->createResponse(
+            404,
+            'Not Found',
+            ['Content-Type' => $this->defaultResponseContentType]
+        );
+        $this->httpClient->addResponse($response);
+        $result = $this->client->delete('events', ['id' => 134]);
+    }
+
+    public function testSuccessfulBulkRegistrationDeletion()
+    {
+        $response = $this->responseFactory->createResponse(
+            204,
+            'No Content',
+            ['Content-Type' => $this->defaultResponseContentType]
+        );
+        $this->httpClient->addResponse($response);
+        $result = $this->client->delete('registrations', ['event_id' => 134]);
+        $this->assertInstanceOf(Result::class, $result);
+        $this->assertTrue($result->success);
+        $this->assertNotEmpty($result->requestID);
+    }
 }
