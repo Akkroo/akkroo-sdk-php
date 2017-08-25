@@ -621,4 +621,33 @@ class ClientTest extends TestCase
         $this->assertInternalType('array', $result->allow);
         $this->assertEquals(['OPTIONS', 'PUT', 'PATCH', 'DELETE', 'HEAD', 'GET'], $result->allow);
     }
+
+    public function testSuccessfulPUTEvent()
+    {
+        $data = json_decode(file_get_contents($this->dataDir . '/event_134.json'), true);
+        $data['date'] = date('Y-m-d', strtotime('tomorrow'));
+        $data['preRegEndDate'] = date('Y-m-d', strtotime('today'));
+        $data['lastModified'] = date('D, j M Y H:i:s e', strtotime('yesterday'));
+
+        $response = $this->responseFactory->createResponse(
+            204,
+            'No Content',
+            ['Content-Type' => $this->defaultResponseContentType]
+        );
+        $this->httpClient->addResponse($response);
+
+        $response = $this->responseFactory->createResponse(
+            200,
+            'No Error',
+            ['Content-Type' => $this->defaultResponseContentType],
+            json_encode(array_merge(['id' => 134], $data))
+        );
+        $this->httpClient->addResponse($response);
+
+        $event = $this->client->put('events', ['id' => 134], $data);
+
+        $this->assertInstanceOf(Event::class, $event);
+        $this->assertEquals(134, $event->id);
+        $this->assertEquals($data['name'], $event->name);
+    }
 }

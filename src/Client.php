@@ -163,7 +163,7 @@ class Client
     public function post($resource, array $data, array $params = [], array $headers = [])
     {
         $path = $this->buildPath($resource, $params);
-        $result = $this->request('POST', $path, $headers);
+        $result = $this->request('POST', $path, $headers, $params, $data);
         // Store temporary resource containing only ID
         $tmp = Resource::create($resource, $result['data'])->withRequestID($result['requestID']);
         // Fetch data for inserted resource: use same request ID, so the server could avoid
@@ -179,13 +179,25 @@ class Client
      * @param  string $resource Resource name (i.e. events, registrations)
      * @param  array  $params   URL parameters (i.e. id, event_id)
      * @param  array  $data     Resource data
+     * @param  array  $headers  Additional headers
+     *
      * @return Akkroo\Resource
+     *
      * @throws Error\Authentication
      * @throws Error\NotFound
      * @throws Error\Generic
      */
-    public function put($resource, array $params, array $data)
+    public function put($resource, array $params, array $data, array $headers = [])
     {
+        $path = $this->buildPath($resource, $params);
+        // Take care of modified header, but let it overridable
+        if (empty($headers['If-Unmodified-Since']) && !empty($data['lastModified'])) {
+            $headers['If-Unmodified-Since'] = $data['lastModified'];
+        }
+        $result = $this->request('PUT', $path, $headers, $params, $data);
+        // If we don't have an exception here it's all right, we can fetch the updated resource
+        $result = $this->request('GET', $path, $headers, $params);
+        return Resource::create($resource, $result['data'])->withRequestID($result['requestID']);
     }
 
     /**
@@ -477,13 +489,17 @@ class Client
         $uri = $this->uriFactory->createUri($this->options['endpoint'])
             ->withPath($path)->withQuery($this->buildQuery($params));
 
+        // Create body, if provided
+        $body = (!empty($data)) ? json_encode($data) : null;
+
         // Create and send a request
         $this->logger->debug('Sending request', [
             'method' => $method,
             'uri' => (string) $uri,
-            'headers' => $requestHeaders
+            'headers' => $requestHeaders,
+            'body' => $body
         ]);
-        $request = $this->requestFactory->createRequest($method, $uri, $requestHeaders);
+        $request = $this->requestFactory->createRequest($method, $uri, $requestHeaders, $body);
         $response = $this->httpClient->sendRequest($request);
         // Check response content type match
         $contentType = $response->getHeaderLine('Content-Type');
