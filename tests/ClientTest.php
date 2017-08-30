@@ -622,6 +622,22 @@ class ClientTest extends TestCase
         $this->assertEquals(['OPTIONS', 'PUT', 'PATCH', 'DELETE', 'HEAD', 'GET'], $result->allow);
     }
 
+    /**
+     * @expectedException Akkroo\Error\Generic
+     * @expectedExceptionCode 400
+     * @expectedExceptionMessage Missing allow header
+     */
+    public function testOptionsMethodWithInvalidResponse()
+    {
+        $response = $this->responseFactory->createResponse(
+            204,
+            'No Content',
+            ['Content-Type' => $this->defaultResponseContentType]
+        );
+        $this->httpClient->addResponse($response);
+        $result = $this->client->options('events', ['id' => 134]);
+    }
+
     public function testSuccessfulPUTEvent()
     {
         $data = json_decode(file_get_contents($this->dataDir . '/event_134.json'), true);
