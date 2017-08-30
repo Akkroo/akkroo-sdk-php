@@ -172,9 +172,32 @@ class ClientTest extends TestCase
    /**
      * @expectedException Akkroo\Error\Generic
      * @expectedExceptionCode 400
-     * @expectedExceptionMessage Bad Request (invalid_client): Client id was not found in the headers or body
+     * @expectedExceptionMessage Unable to login, no access token returned
      */
     public function testGenericLoginError()
+    {
+        $response = $this->responseFactory->createResponse(
+            200,
+            'No Error',
+            ['Content-Type' => $this->defaultResponseContentType],
+            json_encode([
+                'access_token' => '',
+                'expires_in' => 86400,
+                'token_type' => 'bearer',
+                'scope' => 'PublicAPI'
+            ])
+        );
+        // Works with both empty token and empty content
+        $this->httpClient->addResponse($response);
+        $client = $this->client->login();
+    }
+
+   /**
+     * @expectedException Akkroo\Error\Generic
+     * @expectedExceptionCode 400
+     * @expectedExceptionMessage Bad Request (invalid_client): Client id was not found in the headers or body
+     */
+    public function testMissingTokenLoginError()
     {
         $response = $this->responseFactory->createResponse(
             400,
