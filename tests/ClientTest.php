@@ -650,4 +650,38 @@ class ClientTest extends TestCase
         $this->assertEquals(134, $event->id);
         $this->assertEquals($data['name'], $event->name);
     }
+
+    public function testSuccessfulPATCHEvent()
+    {
+        $event = json_decode(file_get_contents($this->dataDir . '/event_134.json'), true);
+        $event['lastModified'] = date('D, j M Y H:i:s e', strtotime('yesterday'));
+
+        $data = ['name' => 'New Event Name'];
+
+        $response = $this->responseFactory->createResponse(
+            204,
+            'No Content',
+            ['Content-Type' => $this->defaultResponseContentType]
+        );
+        $this->httpClient->addResponse($response);
+
+        $response = $this->responseFactory->createResponse(
+            200,
+            'No Error',
+            ['Content-Type' => $this->defaultResponseContentType],
+            json_encode(array_merge(['id' => 134], $event, $data))
+        );
+        $this->httpClient->addResponse($response);
+
+        $event = $this->client->patch(
+            'events',
+            ['id' => 134],
+            $data,
+            ['If-Unmodified-Since' => $event['lastModified']]
+        );
+
+        $this->assertInstanceOf(Event::class, $event);
+        $this->assertEquals(134, $event->id);
+        $this->assertEquals($data['name'], $event->name);
+    }
 }

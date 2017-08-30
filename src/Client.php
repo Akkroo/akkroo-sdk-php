@@ -172,6 +172,37 @@ class Client
     }
 
     /**
+     * Update a resource fully or partially
+     *
+     * If using PUT method, the $data parameter must be the full resource data
+     *
+     * @param  string $method   Must be PUT or PATCH
+     * @param  string $resource Resource name (i.e. events, registrations)
+     * @param  array  $params   URL parameters (i.e. id, event_id)
+     * @param  array  $data     Resource data
+     * @param  array  $headers  Additional headers
+     *
+     * @return Akkroo\Resource
+     *
+     * @throws Error\Authentication
+     * @throws Error\NotFound
+     * @throws Error\Generic
+     */
+    protected function update($method, $resource, array $params, array $data, array $headers = [])
+    {
+        $path = $this->buildPath($resource, $params);
+        // Take care of modified header, but let it overridable
+        if (empty($headers['If-Unmodified-Since']) && !empty($data['lastModified'])) {
+            $headers['If-Unmodified-Since'] = $data['lastModified'];
+        }
+        $result = $this->request($method, $path, $headers, $params, $data);
+        // If we don't have an exception here it's all right, we can fetch the updated resource
+        // using the original Request-ID
+        $headers['Request-ID'] = $result['requestID'];
+        return $this->get($resource, $params, $headers);
+    }
+
+    /**
      * Update a resource
      *
      * The $data parameter must be the full resource data
@@ -189,15 +220,7 @@ class Client
      */
     public function put($resource, array $params, array $data, array $headers = [])
     {
-        $path = $this->buildPath($resource, $params);
-        // Take care of modified header, but let it overridable
-        if (empty($headers['If-Unmodified-Since']) && !empty($data['lastModified'])) {
-            $headers['If-Unmodified-Since'] = $data['lastModified'];
-        }
-        $result = $this->request('PUT', $path, $headers, $params, $data);
-        // If we don't have an exception here it's all right, we can fetch the updated resource
-        $result = $this->request('GET', $path, $headers, $params);
-        return Resource::create($resource, $result['data'])->withRequestID($result['requestID']);
+        return $this->update('PUT', $resource, $params, $data, $headers);
     }
 
     /**
@@ -206,13 +229,16 @@ class Client
      * @param  string $resource Resource name (i.e. events, registrations)
      * @param  array  $params   URL parameters (i.e. id, event_id)
      * @param  array  $data     Resource data
+     * @param  array  $headers  Additional headers
+     *
      * @return Akkroo\Resource
      * @throws Error\Authentication
      * @throws Error\NotFound
      * @throws Error\Generic
      */
-    public function patch($resource, array $params, array $data)
+    public function patch($resource, array $params, array $data, array $headers = [])
     {
+        return $this->update('PATCH', $resource, $params, $data, $headers);
     }
 
     /**
