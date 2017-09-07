@@ -77,7 +77,7 @@ class Client
     public function __construct(HttpClient $httpClient, $apiKey, $options = [])
     {
         $this->httpClient = $httpClient;
-        $this->options = array_merge_recursive($this->defaults, $options);
+        $this->options = array_merge($this->defaults, $options);
         $this->apiKey = $apiKey;
         $this->logger = new NullLogger;
         $this->requestFactory = MessageFactoryDiscovery::find();
