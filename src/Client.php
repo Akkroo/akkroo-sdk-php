@@ -88,11 +88,12 @@ class Client
      * Inject a logger object
      *
      * @param  LoggerInterface $logger A PSR-3 compatible logger
-     * @return void
+     * @return Client
      */
     public function setLogger(LoggerInterface $logger)
     {
         $this->logger = $logger;
+        return $this;
     }
 
     /**
