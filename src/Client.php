@@ -528,6 +528,12 @@ class Client
         ]);
         $request = $this->requestFactory->createRequest($method, $uri, $requestHeaders, $body);
         $response = $this->httpClient->sendRequest($request);
+        $this->logger->debug('Received response', [
+            'status' => $response->getStatusCode(),
+            'reason' => $response->getReasonPhrase(),
+            'headers' => $response->getHeaders(),
+            'body' => (string) $response->getBody()
+        ]);
         // Check response content type match
         $contentType = $response->getHeaderLine('Content-Type');
         if ($contentType !== $acceptContentType) {
