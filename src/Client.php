@@ -513,8 +513,9 @@ class Client
         ], $headers);
 
         // Creating URI: URI params must be already provided by the calling method
-        $uri = $this->uriFactory->createUri($this->options['endpoint'])
-            ->withPath($path)->withQuery($this->buildQuery($params));
+        $endpoint = $this->uriFactory->createUri($this->options['endpoint']);
+        $uri = $endpoint->withPath($endpoint->getPath() . $path)
+            ->withQuery($this->buildQuery($params));
 
         // Create body, if provided
         $body = (!empty($data)) ? json_encode($data) : null;
