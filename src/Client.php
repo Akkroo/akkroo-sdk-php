@@ -110,11 +110,11 @@ class Client
             'Content-Type' => sprintf('application/vnd.akkroo-v%s+json', $this->options['version']),
             'Authorization' => 'Basic ' . $this->apiKey
         ];
-        $body = json_encode([
+        $body = [
             'grant_type' => 'client_credentials',
             'scope' => 'PublicAPI'
-        ]);
-        $result = $this->request('GET', '/auth', $headers, [], $body);
+        ];
+        $result = $this->request('POST', '/auth', $headers, [], $body);
         $login = (new Result($result['data']))->withRequestID($result['requestID']);
         if ($login->access_token) {
             $this->authToken = $login->access_token;
