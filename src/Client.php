@@ -436,7 +436,7 @@ class Client
                 if (empty($params['event_id'])) {
                     throw new InvalidArgumentException('An event ID is required for registrations');
                 }
-                $path = '/events/' . $params['event_id'] . $resource;
+                $path = '/events/' . $params['event_id'] . '/' . $resource;
                 if (!empty($params['id'])) {
                     $path .= '/' . $params['id'];
                 }
