@@ -512,6 +512,16 @@ class Client
             'Request-ID' => $requestID
         ], $headers);
 
+        // Add credentials
+        if (!empty($this->authToken) && empty($requestHeaders['Authorization'])) {
+            $requestHeaders['Authorization'] = 'Bearer ' . $this->authToken;
+        }
+
+        // Add content-type header (currently required GET requests)
+        if (empty($requestHeaders['Content-Type'])) {
+            $requestHeaders['Content-Type'] = $acceptContentType;
+        }
+
         // Creating URI: URI params must be already provided by the calling method
         $endpoint = $this->uriFactory->createUri($this->options['endpoint']);
         $uri = $endpoint->withPath($endpoint->getPath() . $path)
