@@ -5,22 +5,25 @@ use InvalidArgumentException;
 
 class Resource extends Result
 {
-    public static function create($resourceName, $data)
+    public static function create($resourceName, $data, $params = [])
     {
+        $createCollection = isset($data[0]);
         switch ($resourceName) {
             case 'company':
                 $resourceClass = Company::class;
                 break;
             case 'events':
                 $resourceClass = Event::class;
+                $createCollection = empty($params['id']) && empty($data['id']);
                 break;
             case 'registrations':
                 $resourceClass = Registration::class;
+                $createCollection = empty($params['id']) && empty($data['id']);
                 break;
             default:
                 throw new InvalidArgumentException(sprintf('Unknown resource "%s"', $resourceName));
         }
-        if (isset($data[0])) {
+        if ($createCollection) {
             // We have a collection
             return new Collection($data, $resourceClass);
         }

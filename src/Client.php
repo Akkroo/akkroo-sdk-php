@@ -144,7 +144,7 @@ class Client
             $headers['Range'] = sprintf('resources=%d-%d', $params['range'][0], $params['range'][1]);
         }
         $result = $this->request('GET', $path, $headers, $params);
-        return Resource::create($resource, $result['data'])->withRequestID($result['requestID']);
+        return Resource::create($resource, $result['data'], $params)->withRequestID($result['requestID']);
     }
 
     /**
@@ -166,7 +166,7 @@ class Client
         $path = $this->buildPath($resource, $params);
         $result = $this->request('POST', $path, $headers, $params, $data);
         // Store temporary resource containing only ID
-        $tmp = Resource::create($resource, $result['data'])->withRequestID($result['requestID']);
+        $tmp = Resource::create($resource, $result['data'], $params)->withRequestID($result['requestID']);
         // Fetch data for inserted resource: use same request ID, so the server could avoid
         // inserting a duplicate
         return $this->get($resource, array_merge($params, ['id' => $tmp->id]), ['Request-ID' => $tmp->requestID]);

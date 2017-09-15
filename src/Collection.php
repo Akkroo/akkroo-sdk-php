@@ -17,10 +17,11 @@ class Collection extends ArrayObject
     {
         $this->itemType = $itemType;
         array_map(function ($item) use ($itemType) {
-            if (!is_array($item)) {
-                throw new InvalidArgumentException('Invalid item data: array expected');
+            if (!empty($item) && is_array($item)) {
+                $this->append(new $this->itemType($item));
+                return $item;
             }
-            $this->append(new $this->itemType($item));
+            throw new InvalidArgumentException('Invalid item data: array expected');
         }, $data);
         $this->writeable = false;
     }
