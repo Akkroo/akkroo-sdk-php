@@ -144,7 +144,13 @@ class Client
             $headers['Range'] = sprintf('resources=%d-%d', $params['range'][0], $params['range'][1]);
         }
         $result = $this->request('GET', $path, $headers, $params);
-        return Resource::create($resource, $result['data'], $params)->withRequestID($result['requestID']);
+        $resourceMeta = [];
+        if (!empty($result['headers']['Content-Range'])) {
+            $contentRange = $this->parseContentRange($result['headers']);
+            $resourceMeta['contentRange'] = $contentRange;
+        }
+        return Resource::create($resource, $result['data'], $params, $resourceMeta)
+            ->withRequestID($result['requestID']);
     }
 
     /**
@@ -277,15 +283,8 @@ class Client
     {
         $path = $this->buildPath($resource, $params);
         $result = $this->request('HEAD', $path, [], $params);
-        if (empty($result['headers']['Content-Range'])) {
-            throw new Error\Generic('Missing range headers');
-        }
-        $contentRange = explode('/', $result['headers']['Content-Range'][0]);
-        if (count($contentRange) < 2) {
-            throw new Error\Generic('Invalid content range');
-        }
-        $count = (int) $contentRange[1];
-        return (new Result(['count' => $count]))->withRequestID($result['requestID']);
+        $contentRange = $this->parseContentRange($result['headers']);
+        return (new Result(['count' => $contentRange['total']]))->withRequestID($result['requestID']);
     }
 
     /**
@@ -416,6 +415,28 @@ class Client
     {
         $body = (string) $response->getBody();
         return json_decode($body, true);
+    }
+
+    /**
+     * Parse the Content-Range header to readable data
+     *
+     * @param  array $headers
+     * @return array
+     */
+    protected function parseContentRange(array $headers)
+    {
+        if (empty($headers['Content-Range'])) {
+            throw new Error\Generic('Missing range headers');
+        }
+        $matches = [];
+        if (!preg_match('/^resources (\d+)\-(\d+)\/(\d+)$/i', $headers['Content-Range'][0], $matches)) {
+            throw new Error\Generic('Invalid content range');
+        }
+        return [
+            'from' => (int) $matches[1],
+            'to' => (int) $matches[2],
+            'total' => (int) $matches[3]
+        ];
     }
 
     /**

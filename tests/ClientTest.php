@@ -263,13 +263,26 @@ class ClientTest extends TestCase
         $response = $this->responseFactory->createResponse(
             200,
             'No Error',
-            ['Content-Type' => $this->defaultResponseContentType],
+            [
+                'Content-Type' => $this->defaultResponseContentType,
+                'Content-Range' => 'resources 0-2/5'
+            ],
             file_get_contents($this->dataDir . '/events.json')
         );
         $this->httpClient->addResponse($response);
         $events = $this->client->get('events');
         $this->assertInstanceOf(Collection::class, $events);
         $this->assertInstanceOf(Event::class, $events[0]);
+
+        // Testing pagination metadata
+        $eventsMeta = $events->getMeta();
+        $contentRange = $events->getMeta('contentRange');
+        $this->assertInternalType('array', $eventsMeta);
+        $this->assertInternalType('array', $contentRange);
+        $this->assertEquals(0, $contentRange['from']);
+        $this->assertEquals(2, $contentRange['to']);
+        $this->assertEquals(5, $contentRange['total']);
+        $this->assertNull($events->getMeta('foo'));
     }
 
     public function testEventsCollectionWithParameters()

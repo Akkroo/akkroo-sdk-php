@@ -5,7 +5,7 @@ use InvalidArgumentException;
 
 class Resource extends Result
 {
-    public static function create($resourceName, $data, $params = [])
+    public static function create($resourceName, $data, $params = [], $meta = [])
     {
         $createCollection = isset($data[0]);
         switch ($resourceName) {
@@ -25,7 +25,7 @@ class Resource extends Result
         }
         if ($createCollection) {
             // We have a collection
-            return new Collection($data, $resourceClass);
+            return (new Collection($data, $resourceClass))->withMeta($meta);
         }
         return new $resourceClass($data);
     }

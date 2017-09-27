@@ -13,6 +13,8 @@ class Collection extends ArrayObject
 
     protected $requestID = null;
 
+    protected $meta = [];
+
     public function __construct(array $data = [], $itemType = Resource::class)
     {
         $this->itemType = $itemType;
@@ -43,5 +45,22 @@ class Collection extends ArrayObject
     {
         $this->requestID = $value;
         return $this;
+    }
+
+    public function withMeta(array $data)
+    {
+        $this->meta = $data;
+        return $this;
+    }
+
+    public function getMeta($key = null)
+    {
+        if (!empty($key)) {
+            if (isset($this->meta[$key])) {
+                return $this->meta[$key];
+            }
+            return null;
+        }
+        return $this->meta;
     }
 }
