@@ -5,10 +5,18 @@ use Exception;
 
 class Generic extends Exception
 {
+    protected $code = 400;
+    protected $message = 'Bad Request';
     protected $requestID = null;
 
-    public function __construct($message = 'Bad Request', $code = 400, array $body = [])
+    public function __construct($message = '', $code = 0, array $body = [])
     {
+        if (empty($message)) {
+            $message = $this->message;
+        }
+        if (empty($code)) {
+            $code = $this->code;
+        }
         parent::__construct($message, $code);
         if (!empty($body['data']['error'])) {
             $this->message .= ' (' . $body['data']['error'] . ')';

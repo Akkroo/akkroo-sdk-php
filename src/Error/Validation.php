@@ -3,12 +3,12 @@ namespace Akkroo\Error;
 
 class Validation extends Generic
 {
+    protected $message = 'Validation Error';
     protected $details = [];
 
-    public function __construct($message = 'Validation Error', $code = 400, array $body = [])
+    public function __construct($message = '', $code = 400, array $body = [])
     {
         parent::__construct($message, $code, $body);
-        $this->message = $message;
         if (!empty($body['data']['message'])) {
             $this->message = $body['data']['message'];
         }
