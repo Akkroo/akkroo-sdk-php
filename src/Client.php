@@ -359,6 +359,7 @@ class Client
         $headers = [];
         if (!empty($token)) {
             $headers['Authorization'] = 'Bearer ' . $token;
+            $this->authToken = $token;
         } elseif (!empty($this->authToken)) {
             $headers['Authorization'] = 'Bearer ' . $this->authToken;
         }
