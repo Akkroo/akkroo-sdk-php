@@ -28,7 +28,8 @@ class Client
      */
     protected $defaults = [
         'endpoint' => 'https://akkroo.com/api',
-        'version' => '1.1.5'
+        'version' => '1.1.5',
+        'scope' => 'PublicAPI'
     ];
 
     /**
@@ -112,8 +113,11 @@ class Client
         ];
         $body = [
             'grant_type' => 'client_credentials',
-            'scope' => 'PublicAPI'
+            'scope' => $this->options['scope']
         ];
+        if (!empty($this->options['username'])) {
+            $body['username'] = $this->options['username'];
+        }
         $result = $this->request('POST', '/auth', $headers, [], $body);
         $login = (new Result($result['data']))->withRequestID($result['requestID']);
         if ($login->access_token) {
