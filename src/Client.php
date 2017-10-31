@@ -129,6 +129,19 @@ class Client
     }
 
     /**
+     * Returns credentials from last authentication
+     *
+     * @return array
+     */
+    public function getCredentials()
+    {
+        return [
+            'authToken' => $this->authToken,
+            'authTokenExpiration' => $this->authTokenExpiration
+        ];
+    }
+
+    /**
      * Fetch one or more resources
      *
      * @param  string $resource Resource name (i.e. events, registrations)
