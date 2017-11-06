@@ -134,6 +134,10 @@ class ClientTest extends TestCase
         $this->assertInstanceOf(Result::class, $result);
         $this->assertTrue($result->success);
         $this->assertNotEmpty($result->requestID);
+
+        $credentials = $this->client->getCredentials();
+        $this->assertInternalType('array', $credentials);
+        $this->assertEquals('ValidToken', $credentials['authToken']);
     }
 
     public function testSuccessfulLogin()
@@ -167,6 +171,11 @@ class ClientTest extends TestCase
         $this->assertInstanceOf(Result::class, $result);
         $this->assertTrue($result->success);
         $this->assertNotEmpty($result->requestID);
+
+        $credentials = $this->client->getCredentials();
+        $this->assertInternalType('array', $credentials);
+        $this->assertEquals('ValidToken', $credentials['authToken']);
+        $this->assertEquals(time() + 86400, $credentials['authTokenExpiration']);
     }
 
    /**
