@@ -65,4 +65,34 @@ class ErrorTest extends TestCase
         $this->assertEquals('someField', $errorDetails[0]['attribute']);
         $this->assertEquals('someErrorType', $errorDetails[0]['type']);
     }
+
+    public function testUniqueConflict()
+    {
+        $error = new Error\UniqueConflict();
+        $this->assertInstanceOf(Error\UniqueConflict::class, $error);
+        $this->assertEquals(400, $error->getCode());
+        $this->assertEquals('Unique Conflict', $error->getMessage());
+
+        $error = new Error\UniqueConflict('Invalid Input data', 400, [
+            'data' => [
+                'message' => 'Custom error message',
+                'details' => [
+                    'errors' => [
+                        [
+                            'attribute' => 'values.email.value',
+                            'existingID' => '123',
+                            'completed' => 2
+                        ]
+                    ]
+                ]
+            ]
+        ]);
+        $this->assertInstanceOf(Error\UniqueConflict::class, $error);
+        $this->assertEquals(400, $error->getCode());
+        $this->assertEquals('Custom error message', $error->getMessage());
+        $errorDetails = $error->getDetails();
+        $this->assertInternalType('array', $errorDetails);
+        $this->assertEquals('values.email.value', $errorDetails[0]['attribute']);
+        $this->assertEquals('123', $errorDetails[0]['existingID']);
+    }
 }

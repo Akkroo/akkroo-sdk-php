@@ -540,6 +540,28 @@ class ClientTest extends TestCase
         }
     }
 
+    public function testEventUniqueConflict()
+    {
+        $data = json_decode(file_get_contents($this->dataDir . '/event_134.json'), true);
+        $response = $this->responseFactory->createResponse(
+            400,
+            'Bad Request',
+            ['Content-Type' => $this->defaultResponseContentType],
+            file_get_contents($this->dataDir . '/event_unique_conflict.json')
+        );
+        $this->httpClient->addResponse($response);
+        try {
+            $event = $this->client->post('events', $data);
+        } catch (\Exception $e) {
+            $this->assertInstanceOf(\Akkroo\Error\UniqueConflict::class, $e);
+            $this->assertEquals(400, $e->getCode());
+            $this->assertEquals('The registration already exists', $e->getMessage());
+            $errorDetails = $e->getDetails();
+            $this->assertInternalType('array', $errorDetails);
+            $this->assertEquals('values.email.value', $errorDetails[0]['attribute']);
+            $this->assertEquals('134', $errorDetails[0]['existingID']);
+        }
+    }
     public function testSuccessfulNewRegistrationCreation()
     {
         $data = json_decode(file_get_contents($this->dataDir . '/event_134_new_registration.json'), true);

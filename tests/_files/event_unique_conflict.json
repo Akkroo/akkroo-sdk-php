@@ -1,0 +1,13 @@
+{
+	"error": "uniqueConflict",
+	"details": {
+		"errors": [
+			{
+				"attribute": "values.email.value",
+				"existingID": "134",
+				"completed": 2
+			}
+		]
+	},
+	"message": "The registration already exists"
+}

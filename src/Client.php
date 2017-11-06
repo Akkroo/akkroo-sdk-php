@@ -416,6 +416,9 @@ class Client
                     if ($body['data']['error'] === 'validationError') {
                         throw new Error\Validation('Validation Error', $status, $body);
                     }
+                    if ($body['data']['error'] === 'uniqueConflict') {
+                        throw new Error\UniqueConflict('Unique Conflict', $status, $body);
+                    }
                     throw new Error\Generic($reason, $status, $body);
                 }
                 break;
