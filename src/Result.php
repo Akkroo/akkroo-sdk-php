@@ -47,12 +47,19 @@ class Result implements JsonSerializable
         throw new LogicException('Cannot remove properties from a read-only result');
     }
 
+    /**
+     * Customize JSON encode output
+     *
+     * @return array
+     */
     public function jsonSerialize()
     {
-        return array_merge($this->data, ['requestID' => $this->requestID]);
+        return $this->toArray();
     }
 
     /**
+     * Link a result to an API request
+     *
      * @param string $value A request ID to associate
      * @return Result
      */
@@ -63,10 +70,12 @@ class Result implements JsonSerializable
     }
 
     /**
+     * Export internal data as array
+     *
      * @return array
      */
     public function toArray()
     {
-        return $this->data;
+        return array_merge($this->data, ['requestID' => $this->requestID]);
     }
 }
