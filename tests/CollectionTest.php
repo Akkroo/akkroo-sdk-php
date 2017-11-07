@@ -55,10 +55,27 @@ class CollectionTest extends TestCase
         unset($c[0]);
     }
 
+    /**
+     * Test that our custom JSON is exported when a collection is serialized
+     */
     public function testJSONSerialize()
     {
         $c = new Collection([['foo' => 'bar'], ['foo' => 'baz']]);
         $json = json_encode($c);
         $this->assertEquals('[{"foo":"bar","requestID":null},{"foo":"baz","requestID":null}]', $json);
+    }
+
+    /**
+     * Test that a collection can be filtered
+     */
+    public function testFilter()
+    {
+        $c = new Collection([['foo' => 'bar'], ['foo' => 'baz']]);
+        $f = $c->filter(function ($item) {
+            return $item->foo !== 'baz';
+        });
+        $this->assertInstanceOf(Collection::class, $f);
+        $this->assertEquals(1, count($f));
+        $this->assertEquals('bar', $f[0]->foo);
     }
 }
