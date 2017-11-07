@@ -376,6 +376,38 @@ class Client
     }
 
     /**
+     * Send a /findAddress API request
+     *
+     * @param  string  $postcode  A postcode to lookup
+     * @param  integer $eventID   Optional event
+     *
+     * @return Result
+     * @throws Error\Generic
+     * @throws Error\NotFound
+     */
+    public function findAddress($postcode, $eventID = null)
+    {
+        $headers = [];
+        $params = ['postcode' => str_replace(' ', '', $postcode)];
+        if (!empty($eventID)) {
+            $params['eventID'] = $eventID;
+        }
+        $response = $this->request('GET', '/findAddress', $headers, $params);
+        $result = ['success' => false];
+        if ($response['data']['code'] === 4040) {
+            throw new Error\NotFound("Postcode Not Found");
+        }
+        if ($response['data']['code'] === 2000) {
+            $result['success'] = true;
+            $result['results'] = $response['data']['result'];
+        } else {
+            $this->logger->error('Unable to find address', ['postcode' => $postcode, 'response' => $response]);
+            throw new Error\Generic("Bad Request");
+        }
+        return (new Result($result))->withRequestID($response['requestID']);
+    }
+
+    /**
      * Process response status
      *
      * @param  ResponseInterface $response

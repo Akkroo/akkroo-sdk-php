@@ -767,4 +767,65 @@ class ClientTest extends TestCase
         $this->assertEquals(134, $event->id);
         $this->assertEquals($data['name'], $event->name);
     }
+
+    public function testFindAddressSuccess()
+    {
+        $response = $this->responseFactory->createResponse(
+            200,
+            'No Error',
+            ['Content-Type' => $this->defaultResponseContentType],
+            json_encode([
+                'code' => 2000,
+                'message' => 'Success',
+                'result' => [
+                    ['postcode' => 'SW1P 2AL', 'line_1' => 'Akkroo Ltd']
+                ]
+            ])
+        );
+        $this->httpClient->addResponse($response);
+        $result = $this->client->findAddress('SW1P 2AL', 123);
+        $this->assertInstanceOf(Result::class, $result);
+        $this->assertTrue($result->success);
+        $this->assertEquals('Akkroo Ltd', $result->results[0]['line_1']);
+    }
+
+    /**
+     * @expectedException Akkroo\Error\NotFound
+     * @expectedExceptionCode 404
+     * @expectedExceptionMessage Postcode Not Found
+     */
+    public function testFindAddressNotFound()
+    {
+        $response = $this->responseFactory->createResponse(
+            200,
+            'No Error',
+            ['Content-Type' => $this->defaultResponseContentType],
+            json_encode([
+                'code' => 4040,
+                'message' => 'Postcode Not Found',
+            ])
+        );
+        $this->httpClient->addResponse($response);
+        $result = $this->client->findAddress('ABC');
+    }
+
+    /**
+     * @expectedException Akkroo\Error\Generic
+     * @expectedExceptionCode 400
+     * @expectedExceptionMessage Bad Request
+     */
+    public function testFindAddressGenericError()
+    {
+        $response = $this->responseFactory->createResponse(
+            200,
+            'No Error',
+            ['Content-Type' => $this->defaultResponseContentType],
+            json_encode([
+                'code' => 4010,
+                'message' => 'Invalid Key',
+            ])
+        );
+        $this->httpClient->addResponse($response);
+        $result = $this->client->findAddress('SW1P 2AL');
+    }
 }
