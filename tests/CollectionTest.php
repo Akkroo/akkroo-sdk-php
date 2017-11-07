@@ -54,4 +54,11 @@ class CollectionTest extends TestCase
         $c = new Collection([['foo' => 'bar'], ['foo' => 'baz']]);
         unset($c[0]);
     }
+
+    public function testJSONSerialize()
+    {
+        $c = new Collection([['foo' => 'bar'], ['foo' => 'baz']]);
+        $json = json_encode($c);
+        $this->assertEquals('[{"foo":"bar","requestID":null},{"foo":"baz","requestID":null}]', $json);
+    }
 }

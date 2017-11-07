@@ -50,5 +50,7 @@ class ResourceTest extends TestCase
         $event->name = 'Another Event';
         $this->assertEquals('Another Event', $event->name);
         $this->assertObjectNotHasAttribute('name', $event);
+        unset($event->name);
+        $this->assertFalse(isset($event->name));
     }
 }

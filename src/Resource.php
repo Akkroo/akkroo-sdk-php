@@ -34,4 +34,9 @@ class Resource extends Result
     {
         $this->data[$name] = $value;
     }
+
+    public function __unset($name)
+    {
+        unset($this->data[$name]);
+    }
 }

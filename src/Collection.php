@@ -4,8 +4,9 @@ namespace Akkroo;
 use ArrayObject;
 use InvalidArgumentException;
 use LogicException;
+use JsonSerializable;
 
-class Collection extends ArrayObject
+class Collection extends ArrayObject implements JsonSerializable
 {
     protected $itemType = null;
 
@@ -62,5 +63,10 @@ class Collection extends ArrayObject
             return null;
         }
         return $this->meta;
+    }
+
+    public function jsonSerialize()
+    {
+        return (array) $this;
     }
 }
