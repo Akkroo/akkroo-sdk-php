@@ -190,6 +190,10 @@ class Client
         $result = $this->request('POST', $path, $headers, $params, $data);
         // Store temporary resource containing only ID
         $tmp = Resource::create($resource, $result['data'], $params)->withRequestID($result['requestID']);
+        // Return minimal object if called by Webforms, avoiding errors
+        if ($this->options['scope'] === 'Widget') {
+            return $tmp;
+        }
         // Fetch data for inserted resource: use same request ID, so the server could avoid
         // inserting a duplicate
         return $this->get($resource, array_merge($params, ['id' => $tmp->id]), ['Request-ID' => $tmp->requestID]);
@@ -399,6 +403,7 @@ class Client
         }
         if ($response['data']['code'] === 2000) {
             $result['success'] = true;
+            $result['code'] = $response['data']['code'];
             $result['results'] = $response['data']['result'];
         } else {
             $this->logger->error('Unable to find address', ['postcode' => $postcode, 'response' => $response]);
