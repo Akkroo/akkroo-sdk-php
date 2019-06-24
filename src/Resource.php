@@ -5,19 +5,24 @@ use InvalidArgumentException;
 
 class Resource extends Result
 {
+    /**
+     * Create a resource object
+     * @param  string $resourceName Name of the resource (i.e. events, records)
+     * @param  array  $data         Recource data
+     * @param  array  $params       Resource parameters
+     * @param  array  $meta         Resource metadata
+     * @return Event|Record
+     */
     public static function create($resourceName, $data, $params = [], $meta = [])
     {
         $createCollection = isset($data[0]);
         switch ($resourceName) {
-            case 'company':
-                $resourceClass = Company::class;
-                break;
             case 'events':
                 $resourceClass = Event::class;
                 $createCollection = empty($params['id']) && empty($data['id']);
                 break;
-            case 'registrations':
-                $resourceClass = Registration::class;
+            case 'records':
+                $resourceClass = Record::class;
                 $createCollection = empty($params['id']) && empty($data['id']);
                 break;
             default:
@@ -30,12 +35,12 @@ class Resource extends Result
         return new $resourceClass($data);
     }
 
-    public function __set($name, $value)
+    public function __set(string $name, $value)
     {
         $this->data[$name] = $value;
     }
 
-    public function __unset($name)
+    public function __unset(string $name)
     {
         unset($this->data[$name]);
     }

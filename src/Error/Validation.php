@@ -9,11 +9,11 @@ class Validation extends Generic
     public function __construct($message = '', $code = 400, array $body = [])
     {
         parent::__construct($message, $code, $body);
-        if (!empty($body['data']['message'])) {
-            $this->message = $body['data']['message'];
+        if (!empty($body['data']['error']['message'])) {
+            $this->message = $body['data']['error']['message'];
         }
-        if (!empty($body['data']['details']['errors'])) {
-            $this->details = $body['data']['details']['errors'];
+        if (!empty($body['data']['error']['data'])) {
+            $this->details = $body['data']['error']['data'];
         }
     }
 

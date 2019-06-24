@@ -14,6 +14,16 @@ use InvalidArgumentException;
 class Client
 {
     /**
+     * Public API scope
+     */
+    const SCOPE_PUBLIC = 'public';
+
+    /**
+     * Widgec scope
+     */
+    const SCOPE_WIDGET = 'widget';
+
+    /**
      * @var HttpClient
      */
     protected $httpClient;
@@ -27,9 +37,9 @@ class Client
      * @var array
      */
     protected $defaults = [
-        'endpoint' => 'https://akkroo.com/api',
-        'version' => '1.1.5',
-        'scope' => 'PublicAPI'
+        'endpoint' => 'https://api.akkroo.com/v2',
+        'version' => '2.0.0',
+        'scope' => self::SCOPE_PUBLIC
     ];
 
     /**
@@ -53,6 +63,11 @@ class Client
     protected $authTokenExpiration = 0;
 
     /**
+     * @var string
+     */
+    protected $refreshToken = '';
+
+    /**
      * Creates PSR-7 HTTP Requests
      *
      * @var RequestFactory
@@ -72,13 +87,15 @@ class Client
      * Currently supported options are 'version' and 'endpoint'.
      *
      * @param  HttpClient $httpClient Client to do HTTP requests
+     * @param  string $username Your Akkroo API username (i.e. company username)
      * @param  string $apiKey Your Akkroo API key
      * @return void
      */
-    public function __construct(HttpClient $httpClient, $apiKey, $options = [])
+    public function __construct(HttpClient $httpClient, string $username, string $apiKey, array $options = [])
     {
         $this->httpClient = $httpClient;
         $this->options = array_merge($this->defaults, $options);
+        $this->username = $username;
         $this->apiKey = $apiKey;
         $this->logger = new NullLogger;
         $this->requestFactory = MessageFactoryDiscovery::find();
@@ -108,21 +125,20 @@ class Client
     public function login()
     {
         $headers = [
-            'Content-Type' => sprintf('application/vnd.akkroo-v%s+json', $this->options['version']),
-            'Authorization' => 'Basic ' . $this->apiKey
+            'Content-Type' => 'application/json'
         ];
         $body = [
             'grant_type' => 'client_credentials',
+            'client_id' => $this->username,
+            'client_secret' => $this->apiKey,
             'scope' => $this->options['scope']
         ];
-        if (!empty($this->options['username'])) {
-            $body['username'] = $this->options['username'];
-        }
         $result = $this->request('POST', '/auth', $headers, [], $body);
         $login = (new Result($result['data']))->withRequestID($result['requestID']);
         if ($login->access_token) {
             $this->authToken = $login->access_token;
             $this->authTokenExpiration = time() + (int) $login->expires_in;
+            $this->refreshToken = $login->refresh_token;
             return $this;
         }
         throw new Error\Generic("Unable to login, no access token returned");
@@ -137,7 +153,8 @@ class Client
     {
         return [
             'authToken' => $this->authToken,
-            'authTokenExpiration' => $this->authTokenExpiration
+            'authTokenExpiration' => $this->authTokenExpiration,
+            'refreshToken' => $this->refreshToken,
         ];
     }
 
@@ -157,12 +174,9 @@ class Client
     public function get($resource, array $params = [], array $headers = [])
     {
         $path = $this->buildPath($resource, $params);
-        if (!empty($params['range']) && !empty($params['range'][1])) {
-            $headers['Range'] = sprintf('resources=%d-%d', $params['range'][0], $params['range'][1]);
-        }
         $result = $this->request('GET', $path, $headers, $params);
         $resourceMeta = [];
-        if (!empty($result['headers']['Content-Range'])) {
+        if (!empty($result['headers']['X-Total-Count'])) {
             $contentRange = $this->parseContentRange($result['headers']);
             $resourceMeta['contentRange'] = $contentRange;
         }
@@ -191,7 +205,7 @@ class Client
         // Store temporary resource containing only ID
         $tmp = Resource::create($resource, $result['data'], $params)->withRequestID($result['requestID']);
         // Return minimal object if called by Webforms, avoiding errors
-        if ($this->options['scope'] === 'Widget') {
+        if ($this->options['scope'] === self::SCOPE_WIDGET) {
             return $tmp;
         }
         // Fetch data for inserted resource: use same request ID, so the server could avoid
@@ -360,7 +374,9 @@ class Client
      */
     public function authTest($token = null)
     {
-        $headers = [];
+        $headers = [
+            'Content-Type' => 'application/json'
+        ];
         if (!empty($token)) {
             $headers['Authorization'] = 'Bearer ' . $token;
             $this->authToken = $token;
@@ -368,7 +384,7 @@ class Client
             $headers['Authorization'] = 'Bearer ' . $this->authToken;
         }
         try {
-            $result = $this->request('GET', '/authTest', $headers);
+            $result = $this->request('GET', '/auth/test', $headers);
             return (new Result($result['data']))->withRequestID($result['requestID']);
         } catch (Error\Generic $e) {
             $this->logger->error(
@@ -377,39 +393,6 @@ class Client
             );
             return (new Result(['success' => false]))->withRequestID($e->getRequestID());
         }
-    }
-
-    /**
-     * Send a /findAddress API request
-     *
-     * @param  string  $postcode  A postcode to lookup
-     * @param  integer $eventID   Optional event
-     *
-     * @return Result
-     * @throws Error\Generic
-     * @throws Error\NotFound
-     */
-    public function findAddress($postcode, $eventID = null)
-    {
-        $headers = [];
-        $params = ['postcode' => str_replace(' ', '', $postcode)];
-        if (!empty($eventID)) {
-            $params['eventID'] = $eventID;
-        }
-        $response = $this->request('GET', '/findAddress', $headers, $params);
-        $result = ['success' => false];
-        if ($response['data']['code'] === 4040) {
-            throw new Error\NotFound("Postcode Not Found");
-        }
-        if ($response['data']['code'] === 2000) {
-            $result['success'] = true;
-            $result['code'] = $response['data']['code'];
-            $result['results'] = $response['data']['result'];
-        } else {
-            $this->logger->error('Unable to find address', ['postcode' => $postcode, 'response' => $response]);
-            throw new Error\Generic("Bad Request");
-        }
-        return (new Result($result))->withRequestID($response['requestID']);
     }
 
     /**
@@ -450,7 +433,7 @@ class Client
                 // 3xx redirect status must be managed by the HTTP Client
                 // Statuses other that what we define success are automatic errors
                 if (!in_array($status, [200, 201, 202, 203, 204, 205, 206])) {
-                    if ($body['data']['error'] === 'validationError') {
+                    if (isset($body['data']['error']['data'])) {
                         throw new Error\Validation('Validation Error', $status, $body);
                     }
                     if ($body['data']['error'] === 'uniqueConflict') {
@@ -483,18 +466,32 @@ class Client
      */
     protected function parseContentRange(array $headers)
     {
-        if (empty($headers['Content-Range'])) {
-            throw new Error\Generic('Missing range headers');
+        $totalCount = (int) $headers['X-Total-Count'][0];
+        $contentRange = ['from' => 1, 'to' => $totalCount, 'total' => $totalCount];
+        if (!empty($headers['Link'])) {
+            $links = explode(',', $headers['Link'][0]);
+            foreach ($links as $link) {
+                $link = explode(' ', $link);
+                $matches = [];
+                $linkRel = preg_match('/rel="(.*)"/', $link[1], $matches) ? $matches[1] : 'unknown';
+                $matches = [];
+                $linkURI = preg_match('/<\/v2(.*)>/', $link[0], $matches) ? $matches[1] : 'unknown';
+                $linkURIParts = explode('?', $linkURI);
+                $linkResource = trim($linkURIParts[0], '/');
+                parse_str($linkURIParts[1], $linkURIParams);
+                $contentRange['links'][$linkRel] = [
+                    'uri' => $linkURI,
+                    'resource' => $linkResource,
+                    'params' => $linkURIParams
+                ];
+            }
+            $contentRange['page'] = $contentRange['links']['self']['params']['page'];
+            $contentRange['pages'] = $contentRange['links']['last']['params']['page'];
+            $contentRange['per_page'] = $contentRange['links']['self']['params']['per_page'];
+            $contentRange['from'] = $contentRange['per_page'] * ($contentRange['page'] -1) + 1;
+            $contentRange['to'] = $contentRange['per_page'] * $contentRange['page'];
         }
-        $matches = [];
-        if (!preg_match('/^resources (\d+)\-(\d+)\/(\d+)$/i', $headers['Content-Range'][0], $matches)) {
-            throw new Error\Generic('Invalid content range');
-        }
-        return [
-            'from' => (int) $matches[1],
-            'to' => (int) $matches[2],
-            'total' => (int) $matches[3]
-        ];
+        return $contentRange;
     }
 
     /**
@@ -511,9 +508,9 @@ class Client
                     $path .= '/' . $params['id'];
                 }
                 break;
-            case 'registrations':
+            case 'records':
                 if (empty($params['event_id'])) {
-                    throw new InvalidArgumentException('An event ID is required for registrations');
+                    throw new InvalidArgumentException('An event ID is required for records');
                 }
                 $path = '/events/' . $params['event_id'] . '/' . $resource;
                 if (!empty($params['id'])) {
@@ -580,7 +577,7 @@ class Client
     protected function request($method, $path, $headers = [], $params = [], $data = [])
     {
         // Minimal default header
-        $acceptContentType = sprintf('application/vnd.akkroo-v%s+json', $this->options['version']);
+        $acceptContentType = 'application/json';
 
         // Unique request ID
         $requestID = uniqid('', true);
@@ -626,7 +623,7 @@ class Client
         ]);
         // Check response content type match
         $contentType = $response->getHeaderLine('Content-Type');
-        if ($contentType !== $acceptContentType) {
+        if (204 !== $response->getStatusCode() && $contentType !== $acceptContentType) {
             throw new Error\Generic(sprintf("Invalid response content type: %s", $contentType));
         }
 

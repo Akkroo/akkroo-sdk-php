@@ -4,7 +4,6 @@ namespace Akkroo\Tests;
 use PHPUnit\Framework\TestCase;
 
 use Akkroo\Resource;
-use Akkroo\Company;
 use Akkroo\Event;
 use Akkroo\Collection;
 
@@ -15,9 +14,9 @@ class ResourceTest extends TestCase
      */
     public function testKnownResourceType()
     {
-        $company = Resource::create('company', ['name' => 'Some Company']);
-        $this->assertInstanceOf(Company::class, $company);
-        $this->assertNull($company->unknownProperty);
+        $event = Resource::create('events', ['id' => 123, 'name' => 'Some Event']);
+        $this->assertInstanceOf(Event::class, $event);
+        $this->assertNull($event->unknownProperty);
     }
 
     /**
@@ -26,7 +25,7 @@ class ResourceTest extends TestCase
      */
     public function testErrorOnUnknownResourceType()
     {
-        $company = Resource::create('foo', []);
+        $event = Resource::create('foo', []);
     }
 
     /**
@@ -34,11 +33,11 @@ class ResourceTest extends TestCase
      */
     public function testCollectionResource()
     {
-        $companies = Resource::create('company', [
-            ['name' => 'Some Company'],
-            ['name' => 'Other Company']
+        $events = Resource::create('events', [
+            ['name' => 'Some Event'],
+            ['name' => 'Other Event']
         ]);
-        $this->assertInstanceOf(Collection::class, $companies);
+        $this->assertInstanceOf(Collection::class, $events);
     }
 
     public function testEditableResource()

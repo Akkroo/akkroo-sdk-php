@@ -24,7 +24,7 @@ $ composer require akkroo/akkroo-sdk-php
 $http = new Some\Psr7\HTTPClient();
 
 // Create an Akkroo client with your API key
-$akkroo = new Client($http, 'YourAkkrooAPIKey')->login();
+$akkroo = new Client($http, 'YourAkkrooAPIUsername', 'YourAkkrooAPIKey')->login();
 
 // Do awesome stuff...
 var_dump($akkroo->test());

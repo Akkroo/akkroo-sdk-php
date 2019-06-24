@@ -45,14 +45,10 @@ class ErrorTest extends TestCase
 
         $error = new Error\Validation('Invalid Input data', 400, [
             'data' => [
-                'message' => 'Custom error message',
-                'details' => [
-                    'errors' => [
-                        [
-                            'attribute' => 'someField',
-                            'type' => 'someErrorType',
-                            'parameters' => ['value' => 'someValue']
-                        ]
+                'error' => [
+                    'message' => 'Custom error message',
+                    'data' => [
+                        'someField' => 'someField is not valid'
                     ]
                 ]
             ]
@@ -62,8 +58,7 @@ class ErrorTest extends TestCase
         $this->assertEquals('Custom error message', $error->getMessage());
         $errorDetails = $error->getDetails();
         $this->assertInternalType('array', $errorDetails);
-        $this->assertEquals('someField', $errorDetails[0]['attribute']);
-        $this->assertEquals('someErrorType', $errorDetails[0]['type']);
+        $this->assertEquals('someField is not valid', $errorDetails['someField']);
     }
 
     public function testUniqueConflict()
