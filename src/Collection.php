@@ -7,7 +7,7 @@ use LogicException;
 use JsonSerializable;
 
 /**
- * Manage a collection of Akkroo resources
+ * Manage a collection of resources
  *
  * The collection behaves like an array of objects, it can be filtered and serialized to JSON
  */
@@ -25,10 +25,10 @@ class Collection extends ArrayObject implements JsonSerializable
      * Constructor
      *
      * @param   array  $data      Array of resources
-     * @param   [type] $itemType  Acceptable resource class
+     * @param   string $itemType  Acceptable resource class
      * @return  void
      */
-    public function __construct(array $data = [], $itemType = Resource::class)
+    public function __construct(array $data = [], string $itemType = Resource::class)
     {
         $this->itemType = $itemType;
         array_map(function ($item) use ($itemType) {
@@ -86,7 +86,7 @@ class Collection extends ArrayObject implements JsonSerializable
      * @param  string  $value  ID provided by HTTP client
      * @return \Akkroo\Collection
      */
-    public function withRequestID($value)
+    public function withRequestID(string $value)
     {
         $this->requestID = $value;
         return $this;
@@ -110,7 +110,7 @@ class Collection extends ArrayObject implements JsonSerializable
      * @param  string  $key  Specific key to retrieve
      * @return string|array
      */
-    public function getMeta($key = null)
+    public function getMeta(string $key = null)
     {
         if (!empty($key)) {
             if (isset($this->meta[$key])) {
@@ -137,7 +137,7 @@ class Collection extends ArrayObject implements JsonSerializable
      * @param  callable $callback  The callback function to use
      * @return \Akkroo\Collection  The filtered collection
      */
-    public function filter($callback)
+    public function filter(callable $callback)
     {
         return new self(array_filter($this->getArrayCopy(), $callback), $this->itemType);
     }

@@ -19,7 +19,7 @@ class Generic extends Exception
         }
         parent::__construct($message, $code);
         if (!empty($body['data']['error'])) {
-            $this->message .= ' (' . $body['data']['error'] . ')';
+            $this->message .= ' (' . $body['data']['error']['message'] . ')';
         }
         if (!empty($body['data']['error_description'])) {
             $this->message .= ': ' . $body['data']['error_description'];

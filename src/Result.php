@@ -6,7 +6,15 @@ use JsonSerializable;
 
 class Result implements JsonSerializable
 {
+    /**
+     * Result data payload
+     * @var array
+     */
     protected $data = [];
+
+    /**
+     * @var string|null
+     */
     protected $requestID = null;
 
     public function __construct(array $data = [])
@@ -18,7 +26,7 @@ class Result implements JsonSerializable
         $this->data = $data;
     }
 
-    public function __get($name)
+    public function __get(string $name)
     {
         if ('requestID' === $name) {
             return $this->requestID;
@@ -29,7 +37,7 @@ class Result implements JsonSerializable
         return null;
     }
 
-    public function __isset($name)
+    public function __isset(string $name)
     {
         if ('requestID' === $name) {
             return isset($this->requestID);
@@ -37,12 +45,12 @@ class Result implements JsonSerializable
         return array_key_exists($name, $this->data);
     }
 
-    public function __set($name, $value)
+    public function __set(string $name, $value)
     {
         throw new LogicException('Cannot add properties to a read-only result');
     }
 
-    public function __unset($name)
+    public function __unset(string $name)
     {
         throw new LogicException('Cannot remove properties from a read-only result');
     }
@@ -63,7 +71,7 @@ class Result implements JsonSerializable
      * @param string $value A request ID to associate
      * @return Result
      */
-    public function withRequestID($value)
+    public function withRequestID(string $value)
     {
         $this->requestID = $value;
         return $this;

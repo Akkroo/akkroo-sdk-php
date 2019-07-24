@@ -5,7 +5,7 @@ use PHPUnit\Framework\TestCase;
 
 use Akkroo\Collection;
 use Akkroo\Resource;
-use Akkroo\Company;
+use Akkroo\Record;
 
 class CollectionTest extends TestCase
 {
@@ -19,8 +19,8 @@ class CollectionTest extends TestCase
         $this->assertEquals(2, count($c));
         $this->assertInstanceOf(Resource::class, $c[0]);
 
-        $c = new Collection([['foo' => 'bar'], ['foo' => 'baz']], Company::class);
-        $this->assertInstanceOf(Company::class, $c[0]);
+        $c = new Collection([['foo' => 'bar'], ['foo' => 'baz']], Record::class);
+        $this->assertInstanceOf(Record::class, $c[0]);
     }
 
     /**

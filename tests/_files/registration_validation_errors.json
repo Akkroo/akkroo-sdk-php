@@ -1,15 +1,9 @@
 {
-	"error": "validationError",
-	"details": {
-		"errors": [
-			{
-				"attribute": "isCheckIn",
-				"type": "mustBeSet",
-				"parameters": [
-
-				]
-			}
-		]
-	},
-	"message": "One or more validation errors occured"
+    "error": {
+        "message": "The data from the request failed schema validation",
+        "data": {
+            "timeArrived": "Failed to match at least one schema",
+            "": "Failed to match all schemas"
+        }
+    }
 }
