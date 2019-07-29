@@ -486,7 +486,7 @@ class Client
                 ];
             }
             $contentRange['page'] = $contentRange['links']['self']['params']['page'];
-            $contentRange['pages'] = $contentRange['links']['last']['params']['page'];
+            $contentRange['pages'] = $contentRange['links']['last']['params']['page'] ?? 1;
             $contentRange['per_page'] = $contentRange['links']['self']['params']['per_page'];
             $contentRange['from'] = $contentRange['per_page'] * ($contentRange['page'] -1) + 1;
             $contentRange['to'] = $contentRange['per_page'] * $contentRange['page'];
