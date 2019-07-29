@@ -12,4 +12,5 @@ install: composer install
 
 after_script:
   - wget https://scrutinizer-ci.com/ocular.phar
-  - php ocular.phar code-coverage:upload --format=php-clover build/coverage/logs/coverage.clover
+  - if [ ! -f ./build/logs/coverage.clover ]; then echo "Coverage file not found"; fi
+  - php ocular.phar code-coverage:upload --format=php-clover ./build/coverage/logs/coverage.clover
