@@ -4,6 +4,14 @@ namespace Akkroo;
 use LogicException;
 use JsonSerializable;
 
+/**
+ * A basic response result object
+ *
+ * @property string access_token    Authentication token for successful login results
+ * @property int    expires_in      Authentication token duration for successful login results
+ * @property string refresh_token   Refresh token for successful login results
+ * @property-read string requestID  Identifier for an HTTP request
+ */
 class Result implements JsonSerializable
 {
     /**

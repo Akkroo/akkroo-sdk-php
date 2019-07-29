@@ -50,6 +50,11 @@ class Client
     /**
      * @var string
      */
+    protected $username = '';
+
+    /**
+     * @var string
+     */
     protected $apiKey = '';
 
     /**
@@ -165,7 +170,7 @@ class Client
      * @param  array  $params   Search parameters (i.e. id, event_id, search query, range, fields, sort)
      * @param  array  $headers Additional headers
      *
-     * @return Akkroo\Collection | Akkroo\Resource
+     * @return Collection | Resource
      *
      * @throws Error\Authentication
      * @throws Error\NotFound
@@ -192,7 +197,7 @@ class Client
      * @param  array  $params   Search parameters (i.e. id, event_id, search query, range, fields, sort)
      * @param  array  $headers  Additional headers
      *
-     * @return Akkroo\Resource
+     * @return Resource
      *
      * @throws Error\Authentication
      * @throws Error\NotFound
@@ -289,7 +294,7 @@ class Client
      * @param  string $resource Resource name (i.e. events, registrations)
      * @param  array  $params   URL parameters (i.e. id, event_id)
      *
-     * @return Akkroo\Result
+     * @return Result
      *
      * @throws Error\Authentication
      * @throws Error\NotFound
@@ -308,7 +313,7 @@ class Client
      * @param  string $resource Resource name (i.e. events, registrations)
      * @param  array  $params   URL parameters (i.e. id, event_id)
      *
-     * @return Akkroo\Result
+     * @return Result
      *
      * @throws Error\Authentication
      * @throws Error\NotFound
@@ -328,7 +333,7 @@ class Client
      * @param  string $resource Resource name (i.e. events, registrations)
      * @param  array  $params   URL parameters (i.e. id, event_id)
      *
-     * @return Akkroo\Result
+     * @return Result
      *
      * @throws Error\Authentication
      * @throws Error\NotFound

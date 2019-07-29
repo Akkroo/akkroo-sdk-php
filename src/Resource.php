@@ -11,11 +11,10 @@ class Resource extends Result
      * @param  array  $data         Recource data
      * @param  array  $params       Resource parameters
      * @param  array  $meta         Resource metadata
-     * @return Event|Record
+     * @return Event|Record|Collection
      */
     public static function create($resourceName, $data, $params = [], $meta = [])
     {
-        $createCollection = isset($data[0]);
         switch ($resourceName) {
             case 'events':
                 $resourceClass = Event::class;

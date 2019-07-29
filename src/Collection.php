@@ -31,7 +31,7 @@ class Collection extends ArrayObject implements JsonSerializable
     public function __construct(array $data = [], string $itemType = Resource::class)
     {
         $this->itemType = $itemType;
-        array_map(function ($item) use ($itemType) {
+        array_map(function ($item) {
             if (!empty($item)) {
                 if (is_array($item)) {
                     $this->append(new $this->itemType($item));
@@ -58,10 +58,10 @@ class Collection extends ArrayObject implements JsonSerializable
      */
     public function offsetSet($index, $newval)
     {
-        if ($this->writeable) {
-            return parent::offsetSet($index, $newval);
+        if (!$this->writeable) {
+            throw new LogicException('Cannot add elements to a read-only collection');
         }
-        throw new LogicException('Cannot add elements to a read-only collection');
+        parent::offsetSet($index, $newval);
     }
 
     /**

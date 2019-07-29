@@ -1,6 +1,11 @@
 <?php
 namespace Akkroo;
 
+/**
+ * Represents an Event resource
+ *
+ * @property int id  Event ID
+ */
 class Event extends Resource
 {
     /**
