@@ -229,7 +229,7 @@ class Client
      * @param  array  $data     Resource data
      * @param  array  $headers  Additional headers
      *
-     * @return Akkroo\Resource
+     * @return Resource
      *
      * @throws Error\Authentication
      * @throws Error\NotFound
@@ -259,7 +259,7 @@ class Client
      * @param  array  $data     Resource data
      * @param  array  $headers  Additional headers
      *
-     * @return Akkroo\Resource
+     * @return Resource
      *
      * @throws Error\Authentication
      * @throws Error\NotFound
@@ -278,7 +278,7 @@ class Client
      * @param  array  $data     Resource data
      * @param  array  $headers  Additional headers
      *
-     * @return Akkroo\Resource
+     * @return Resource
      * @throws Error\Authentication
      * @throws Error\NotFound
      * @throws Error\Generic
