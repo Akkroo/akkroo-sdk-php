@@ -31,6 +31,6 @@
         <log type="coverage-html" target="build/coverage" charset="UTF-8" yui="true" highlight="true" showUncoveredFiles="true"/>
         <log type="coverage-text" target="build/coverage.txt" showUncoveredFiles="true"/>
         <log type="coverage-text" target="php://stdout" showUncoveredFiles="true"/>
-        <log type="coverage-clover" target="build/logs/clover.xml" showUncoveredFiles="true"/>
+        <log type="coverage-clover" target="build/logs/coverage.clover" showUncoveredFiles="true"/>
     </logging>
 </phpunit>
