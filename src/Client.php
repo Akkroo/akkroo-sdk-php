@@ -474,7 +474,8 @@ class Client
         $totalCount = (int) $headers['X-Total-Count'][0];
         $contentRange = ['from' => 1, 'to' => $totalCount, 'total' => $totalCount];
         if (!empty($headers['Link'])) {
-            $links = explode(',', $headers['Link'][0]);
+            preg_match('/\<.+?>\;\srel\=\".+?\"/', $headers['Link'][0], $links);
+
             foreach ($links as $link) {
                 $link = explode(' ', $link);
                 $matches = [];
