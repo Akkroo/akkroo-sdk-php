@@ -474,9 +474,9 @@ class Client
         $totalCount = (int) $headers['X-Total-Count'][0];
         $contentRange = ['from' => 1, 'to' => $totalCount, 'total' => $totalCount];
         if (!empty($headers['Link'])) {
-            preg_match('/\<.+?>\;\srel\=\".+?\"/', $headers['Link'][0], $links);
+            preg_match_all('/\<.+?>\;\srel\=\".+?\"/', $headers['Link'][0], $links);
 
-            foreach ($links as $link) {
+            foreach ($links[0] as $link) {
                 $link = explode(' ', $link);
                 $matches = [];
                 $linkRel = preg_match('/rel="(.*)"/', $link[1], $matches) ? $matches[1] : 'unknown';
@@ -497,6 +497,7 @@ class Client
             $contentRange['from'] = $contentRange['per_page'] * ($contentRange['page'] -1) + 1;
             $contentRange['to'] = $contentRange['per_page'] * $contentRange['page'];
         }
+
         return $contentRange;
     }
 
