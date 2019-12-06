@@ -19,7 +19,7 @@ class Client
     const SCOPE_PUBLIC = 'public';
 
     /**
-     * Widgec scope
+     * Widget scope
      */
     const SCOPE_WIDGET = 'widget';
 
