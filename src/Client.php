@@ -37,7 +37,7 @@ class Client
      * @var array
      */
     protected $defaults = [
-        'endpoint' => 'https://public.api.akkroo.com/v2',
+        'endpoint' => 'https://api.integrate-events.com/v2',
         'version' => '2.0.0',
         'scope' => self::SCOPE_PUBLIC
     ];
