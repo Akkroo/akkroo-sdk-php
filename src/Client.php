@@ -27,7 +27,7 @@ class Client
      * @var array
      */
     protected $defaults = [
-        'endpoint' => 'https://akkroo.com/api',
+        'endpoint' => 'https://app.integrate-events.com/api',
         'version' => '1.1.5',
         'scope' => 'PublicAPI'
     ];
@@ -102,29 +102,42 @@ class Client
      *
      * Note: current API version returns HTTP 400 when wrong credentials are supplied
      *
+     * @param string $username
+     *
+     * @return self
+     *
      * @throws Error\Authentication
-     * @throws Error\generic
+     * @throws Error\Generic
      */
-    public function login()
+    public function login($username = null)
     {
         $headers = [
             'Content-Type' => sprintf('application/vnd.akkroo-v%s+json', $this->options['version']),
             'Authorization' => 'Basic ' . $this->apiKey
         ];
+
         $body = [
             'grant_type' => 'client_credentials',
             'scope' => $this->options['scope']
         ];
-        if (!empty($this->options['username'])) {
+
+        if ($username) {
+            $body['username'] = $username;
+        }
+
+        if (! empty($this->options['username']) && $username === null) {
             $body['username'] = $this->options['username'];
         }
+
         $result = $this->request('POST', '/auth', $headers, [], $body);
         $login = (new Result($result['data']))->withRequestID($result['requestID']);
+
         if ($login->access_token) {
             $this->authToken = $login->access_token;
             $this->authTokenExpiration = time() + (int) $login->expires_in;
             return $this;
         }
+
         throw new Error\Generic("Unable to login, no access token returned");
     }
 
