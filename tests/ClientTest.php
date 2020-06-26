@@ -236,7 +236,7 @@ class ClientTest extends TestCase
         );
         $this->httpClient->addResponse($response);
         $result = $this->client->test([
-            'Request-ID' => $customRequestID
+            'X-Request-ID' => $customRequestID
         ]);
         $this->assertInstanceOf(Result::class, $result);
         $this->assertTrue($result->success);
