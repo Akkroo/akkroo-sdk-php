@@ -371,8 +371,15 @@ class Client
      */
     public function test($headers = [])
     {
-        $result = $this->request('GET', '/selftest', $headers);
-        return (new Result($result['data']))->withRequestID($result['requestID']);
+        $endpoint = $this->uriFactory->createUri($this->options['endpoint']);
+        $uri = $endpoint->withPath('/health');
+
+        $request = $this->requestFactory->createRequest('GET', $uri, $headers);
+        $response = $this->httpClient->sendRequest($request);
+
+        $result = $this->parseResponse($response);
+
+        return new Result($result['data']);
     }
 
     /**
