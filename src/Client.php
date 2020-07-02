@@ -609,7 +609,7 @@ class Client
         // Adding custom headers
         $requestHeaders = array_merge([
             'Accept' => $acceptContentType,
-            'Request-ID' => $requestID
+            'X-Request-ID' => $requestID
         ], $headers);
 
         // Add credentials
@@ -652,6 +652,6 @@ class Client
         }
 
         // Return the decoded JSON and let the caller create the appropriate result format
-        return $this->parseResponse($response, $requestHeaders['Request-ID']);
+        return $this->parseResponse($response, $requestHeaders['X-Request-ID']);
     }
 }
