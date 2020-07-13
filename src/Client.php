@@ -124,14 +124,24 @@ class Client
      *
      * Note: current API version returns HTTP 400 when wrong credentials are supplied
      *
+     * @param string|null $username
+     *
+     * @return Client
+     *
      * @throws Error\Authentication
-     * @throws Error\generic
+     * @throws Error\Generic
+     * @throws Error\NotFound
      */
-    public function login()
+    public function login(string $username = null)
     {
         $headers = [
             'Content-Type' => 'application/json'
         ];
+
+        if ($username !== null) {
+            $headers = array_merge(['X-Auth-Username' => $username], $headers);
+        }
+
         $body = [
             'grant_type' => 'client_credentials',
             'client_id' => $this->username,
@@ -146,7 +156,7 @@ class Client
             $this->refreshToken = $login->refresh_token;
             return $this;
         }
-        throw new Error\Generic("Unable to login, no access token returned");
+        throw new Error\Generic('Unable to login, no access token returned');
     }
 
     /**
@@ -361,8 +371,15 @@ class Client
      */
     public function test($headers = [])
     {
-        $result = $this->request('GET', '/selftest', $headers);
-        return (new Result($result['data']))->withRequestID($result['requestID']);
+        $endpoint = $this->uriFactory->createUri($this->options['endpoint']);
+        $uri = $endpoint->withPath('/health');
+
+        $request = $this->requestFactory->createRequest('GET', $uri, $headers);
+        $response = $this->httpClient->sendRequest($request);
+
+        $result = $this->parseResponse($response);
+
+        return new Result($result['data']);
     }
 
     /**

@@ -63,7 +63,6 @@ class ClientTest extends TestCase
         $result = $this->client->test();
         $this->assertInstanceOf(Result::class, $result);
         $this->assertTrue($result->success);
-        $this->assertNotEmpty($result->requestID);
     }
 
     public function testAuthenticationWithNoToken()
@@ -419,7 +418,7 @@ class ClientTest extends TestCase
             ])
         );
         $this->httpClient->addResponse($response);
-        $result = $this->client->test();
+        $result = $this->client->get('some-path');
     }
 
     public function testValidResourceCount()
