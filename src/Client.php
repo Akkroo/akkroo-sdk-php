@@ -37,7 +37,9 @@ class Client
      * @var array
      */
     protected $defaults = [
-        'endpoint' => 'https://api.integrate-events.com/v2',
+        'endpoint' => 'https://api.integrate-events.com/v2.1',
+        'auth_endpoint' => 'https://integrate-unified-dev.auth0.com/oauth/token',
+        'auth_audience' => 'https://api.integrate-events.com/',
         'version' => '2.0.0',
         'scope' => self::SCOPE_PUBLIC
     ];
@@ -50,12 +52,12 @@ class Client
     /**
      * @var string
      */
-    protected $username = '';
+    protected $clientId = '';
 
     /**
      * @var string
      */
-    protected $apiKey = '';
+    protected $clientSecret = '';
 
     /**
      * @var string
@@ -66,11 +68,6 @@ class Client
      * @var int
      */
     protected $authTokenExpiration = 0;
-
-    /**
-     * @var string
-     */
-    protected $refreshToken = '';
 
     /**
      * Creates PSR-7 HTTP Requests
@@ -91,17 +88,17 @@ class Client
      *
      * Currently supported options are 'version' and 'endpoint'.
      *
-     * @param  HttpClient $httpClient Client to do HTTP requests
-     * @param  string $username Your Akkroo API username (i.e. company username)
-     * @param  string $apiKey Your Akkroo API key
-     * @return void
+     * @param HttpClient $httpClient Client to do HTTP requests
+     * @param string $clientId Your Akkroo API username (i.e. company username)
+     * @param string $clientSecret Your Akkroo API key
+     * @param array $options
      */
-    public function __construct(HttpClient $httpClient, string $username, string $apiKey, array $options = [])
+    public function __construct(HttpClient $httpClient, string $clientId, string $clientSecret, array $options = [])
     {
         $this->httpClient = $httpClient;
         $this->options = array_merge($this->defaults, $options);
-        $this->username = $username;
-        $this->apiKey = $apiKey;
+        $this->clientId = $clientId;
+        $this->clientSecret = $clientSecret;
         $this->logger = new NullLogger;
         $this->requestFactory = MessageFactoryDiscovery::find();
         $this->uriFactory = UriFactoryDiscovery::find();
@@ -138,24 +135,29 @@ class Client
             'Content-Type' => 'application/json'
         ];
 
-        if ($username !== null) {
-            $headers = array_merge(['X-Auth-Username' => $username], $headers);
-        }
-
         $body = [
             'grant_type' => 'client_credentials',
-            'client_id' => $this->username,
-            'client_secret' => $this->apiKey,
-            'scope' => $this->options['scope']
+            'client_id' => $this->clientId,
+            'client_secret' => $this->clientSecret,
+            'audience' => $this->options['auth_audience'],
         ];
-        $result = $this->request('POST', '/auth', $headers, [], $body);
-        $login = (new Result($result['data']))->withRequestID($result['requestID']);
+
+        if ($username !== null) {
+            $body['company'] = $username;
+        }
+
+        $request = $this->requestFactory->createRequest('POST', $this->options['auth_endpoint'], $headers, json_encode($body));
+        $response = $this->httpClient->sendRequest($request);
+        $result = $this->parseResponse($response);
+        $login = new Result($result['data']);
+
         if ($login->access_token) {
             $this->authToken = $login->access_token;
             $this->authTokenExpiration = time() + (int) $login->expires_in;
-            $this->refreshToken = $login->refresh_token;
+
             return $this;
         }
+
         throw new Error\Generic('Unable to login, no access token returned');
     }
 
@@ -169,7 +171,6 @@ class Client
         return [
             'authToken' => $this->authToken,
             'authTokenExpiration' => $this->authTokenExpiration,
-            'refreshToken' => $this->refreshToken,
         ];
     }
 

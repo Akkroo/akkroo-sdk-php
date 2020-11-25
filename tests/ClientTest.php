@@ -5,15 +5,11 @@ use PHPUnit\Framework\TestCase;
 
 use Akkroo\Client;
 use Akkroo\Result;
-use Akkroo\Resource;
 use Akkroo\Collection;
-use Akkroo\Company;
 use Akkroo\Event;
 use Akkroo\Record;
-
 use Http\Mock\Client as MockClient;
 use Http\Discovery;
-
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
 
@@ -31,8 +27,8 @@ class ClientTest extends TestCase
 
     public function setUp()
     {
-        $this->apiKey = 'DummyAPIKey';
-        $this->apiUsername = 'dummy';
+        $this->clientSecret = 'DummyAPIKey';
+        $this->clientId = 'dummy';
         $this->logger = new Logger('TestSDK');
         $this->logger->pushHandler(new StreamHandler(self::$logFile, Logger::DEBUG));
         $this->httpClient = new MockClient;
@@ -40,7 +36,7 @@ class ClientTest extends TestCase
         $this->responseFactory = Discovery\MessageFactoryDiscovery::find();
         $this->dataDir = dirname(__FILE__) . '/_files';
 
-        $this->client = new Client($this->httpClient, $this->apiUsername, $this->apiKey);
+        $this->client = new Client($this->httpClient, $this->clientId, $this->clientSecret);
         $this->client->setLogger($this->logger);
     }
 
@@ -149,7 +145,6 @@ class ClientTest extends TestCase
             json_encode([
                 'access_token' => 'ValidToken',
                 'expires_in' => 86400,
-                'refresh_token' => 'RefreshToken'
             ])
         );
         $this->httpClient->addResponse($response);
