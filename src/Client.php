@@ -38,7 +38,7 @@ class Client
      */
     protected $defaults = [
         'endpoint' => 'https://api.integrate-events.com/v2.1',
-        'auth_endpoint' => 'https://integrate-unified-dev.auth0.com/oauth/token',
+        'auth_endpoint' => 'https://auth.integrate.com/oauth/token',
         'auth_audience' => 'https://api.integrate-events.com/',
         'version' => '2.0.0',
         'scope' => self::SCOPE_PUBLIC
